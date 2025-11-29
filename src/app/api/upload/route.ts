@@ -97,5 +97,5 @@ export async function POST(request: NextRequest) {
 }
 
 // Only use edge runtime if Vercel Blob is available
-export const runtime = process.env.BLOB_READ_WRITE_TOKEN ? 'edge' : 'nodejs';
+export const runtime = 'nodejs';
 export const maxDuration = 30;
