@@ -44,7 +44,7 @@ export default function AdminLogin() {
       const data = await response.json()
 
       if (response.ok && data.success) {
-        document.cookie = `auth-token=${data.data.token}; path=/; max-age=${7 * 24 * 60 * 60}; secure; samesite=strict`
+        // Cookie is set by the server (HttpOnly)
 
         toast({
           title: "Login Berhasil",
