@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -84,7 +85,8 @@ interface Project {
 }
 
 const Portfolio = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedSkillCategory, setSelectedSkillCategory] = useState('all');
   const [formData, setFormData] = useState({
@@ -172,24 +174,14 @@ const Portfolio = () => {
   }, []);
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-      setIsDarkMode(true);
-      document.documentElement.classList.add('dark');
-    }
+    setMounted(true);
   }, []);
 
   const toggleTheme = () => {
-    const newTheme = !isDarkMode;
-    setIsDarkMode(newTheme);
-    if (newTheme) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
+    setTheme(theme === 'dark' ? 'light' : 'dark');
   };
+
+  const isDarkMode = theme === 'dark';
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -314,7 +306,7 @@ const Portfolio = () => {
         {/* Animated Background */}
         <div className="absolute inset-0 -z-10">
           {/* Gradient Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-primary/10 animate-gradient-shift"></div>
+          <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-background to-primary/10 animate-gradient-shift"></div>
           
           {/* Floating Particles */}
           <div className="absolute inset-0">
@@ -330,7 +322,7 @@ const Portfolio = () => {
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in-up px-4">
-            Halo, Saya <span className="text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60 animate-gradient-text">{profile?.fullName || 'Ari Rusmawan'}</span>
+            Halo, Saya <span className="text-primary bg-clip-text text-transparent bg-linear-to-r from-primary to-primary/60 animate-gradient-text">{profile?.fullName || 'Ari Rusmawan'}</span>
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-8 animate-fade-in-up animation-delay-200 px-4">
             {profile?.title || 'Information Technology Education | Programmer | Adm. QA/QC | Project Expeditor'}
@@ -437,7 +429,7 @@ const Portfolio = () => {
       </section>
 
       {/* Education Section */}
-      <section id="education" className="py-20 px-4 bg-accent/20">
+      <section id="education" className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Pendidikan</h2>
           <div className="space-y-8">
@@ -505,7 +497,7 @@ const Portfolio = () => {
                   <ul className="space-y-2">
                     {exp.responsibilities && exp.responsibilities.map((resp, respIndex) => (
                       <li key={respIndex} className="flex items-start gap-2">
-                        <CheckCircle className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                        <CheckCircle className="h-4 w-4 text-primary mt-0.5 shrink-0" />
                         <span className="text-sm">{resp}</span>
                       </li>
                     ))}
@@ -518,7 +510,7 @@ const Portfolio = () => {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="py-20 px-4 bg-accent/20">
+      <section id="skills" className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Keahlian</h2>
           
@@ -567,7 +559,7 @@ const Portfolio = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project) => (
               <Card key={project.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
-                <div className="aspect-video bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
+                <div className="aspect-video bg-linear-to-br from-primary/20 to-primary/5 flex items-center justify-center">
                   <Code className="h-12 w-12 text-primary" />
                 </div>
                 <CardHeader>
@@ -615,7 +607,7 @@ const Portfolio = () => {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 px-4 bg-accent/20">
+      <section id="contact" className="py-20 px-4">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Hubungi Saya</h2>
           
