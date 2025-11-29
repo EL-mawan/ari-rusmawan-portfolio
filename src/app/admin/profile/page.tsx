@@ -258,7 +258,7 @@ export default function AdminProfile() {
                   />
                 </div>
                 <p className="text-sm text-muted-foreground text-center">
-                  Rekomendasi: Gambar persegi, minimal 400x400px
+                  Rekomendasi: Gambar persegi, minimal 1000x1000px
                 </p>
               </div>
             </CardContent>
