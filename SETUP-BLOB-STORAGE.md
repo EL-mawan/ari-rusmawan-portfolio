@@ -1,130 +1,170 @@
-# 📦 Setup Vercel Blob Storage untuk Upload File
+# 📦 Setup File Upload
 
-Aplikasi ini menggunakan **Vercel Blob Storage** untuk menyimpan file upload (foto profil, CV, gambar project).
+Aplikasi ini mendukung 2 mode upload:
 
-## 🚀 Cara Setup di Vercel
+## 🏠 Local Development (Filesystem)
 
-### 1. Buat Blob Store
+Untuk development local, upload akan otomatis menggunakan filesystem lokal.
 
-1. Buka [Vercel Dashboard](https://vercel.com/dashboard)
-2. Pilih project Anda: `ari-rusmawan-portfolio`
-3. Klik tab **"Storage"**
-4. Klik **"Create Database"**
-5. Pilih **"Blob"**
-6. Beri nama: `portfolio-uploads` (atau nama lain yang Anda suka)
-7. Pilih region: **Singapore (sin1)** (terdekat dengan Indonesia)
-8. Klik **"Create"**
+**Tidak perlu setup apapun!** Upload akan bekerja langsung dan file tersimpan di:
 
-### 2. Connect ke Project
+```
+public/uploads/profile/  - Foto profil
+public/uploads/cv/       - File CV/Resume
+public/uploads/project/  - Gambar project
+```
 
-1. Setelah Blob store dibuat, klik **"Connect to Project"**
-2. Pilih project: `ari-rusmawan-portfolio`
-3. Pilih environment:
+⚠️ **Catatan**: File di folder ini tidak akan ter-commit ke Git (sudah ada di `.gitignore`).
+
+## ☁️ Production (Vercel Blob Storage)
+
+Untuk production di Vercel, Anda **HARUS** setup Vercel Blob Storage karena Vercel menggunakan serverless environment dengan read-only filesystem.
+
+### Langkah Setup Vercel Blob:
+
+#### 1. Buka Vercel Dashboard
+
+Buka browser dan akses: https://vercel.com/dashboard
+
+#### 2. Pilih Project
+
+Klik project: **ari-rusmawan-portfolio**
+
+#### 3. Buka Tab Storage
+
+Klik tab **"Storage"** di menu atas
+
+#### 4. Create Blob Store
+
+1. Klik tombol **"Create Database"**
+2. Pilih **"Blob"** dari pilihan yang tersedia
+3. Isi form:
+   - **Store Name**: `portfolio-uploads` (atau nama lain)
+   - **Region**: Pilih **Singapore (sin1)** untuk performa terbaik di Indonesia
+4. Klik **"Create"**
+
+#### 5. Connect ke Project
+
+1. Setelah Blob store dibuat, akan muncul dialog "Connect to Project"
+2. Pilih project: **ari-rusmawan-portfolio**
+3. Pilih **semua** environment:
    - ✅ Production
    - ✅ Preview
    - ✅ Development
 4. Klik **"Connect"**
 
-### 3. Environment Variable Otomatis
+#### 6. Verifikasi Environment Variable
 
 Vercel akan otomatis menambahkan environment variable:
 
-- `BLOB_READ_WRITE_TOKEN` - Token untuk read/write access
+- `BLOB_READ_WRITE_TOKEN`
 
-Variable ini sudah otomatis tersedia di semua environment (Production, Preview, Development).
+Untuk memverifikasi:
 
-### 4. Pull Environment Variables (untuk Local Development)
+1. Buka **Settings** → **Environment Variables**
+2. Cari `BLOB_READ_WRITE_TOKEN`
+3. Pastikan ada untuk semua environment (Production, Preview, Development)
 
-Jika Anda ingin test upload di local:
+#### 7. Redeploy (Otomatis)
 
-```bash
-# Pull env vars dari Vercel
-vercel env pull .env.local
+Vercel akan otomatis trigger deployment baru setelah Blob store ter-connect.
 
-# Atau manual copy BLOB_READ_WRITE_TOKEN dari Vercel Dashboard
-# Settings → Environment Variables → BLOB_READ_WRITE_TOKEN
-```
-
-### 5. Redeploy
-
-Setelah Blob store ter-connect, redeploy aplikasi:
+Atau manual redeploy:
 
 ```bash
 vercel --prod
 ```
 
-## 📝 Fitur Upload
+## 🧪 Testing Upload
 
-Setelah setup, Anda bisa upload:
+### Local Development:
 
-### ✅ Foto Profil
+1. Jalankan: `npm run dev`
+2. Login ke: `http://localhost:3000/admin/login`
+3. Buka: `http://localhost:3000/admin/profile`
+4. Coba upload foto profil
+5. File akan tersimpan di `public/uploads/profile/`
 
-- **Lokasi**: `/admin/profile`
+### Production (Vercel):
+
+1. Login ke: `https://ari-rusmawan-portfolio.vercel.app/admin/login`
+2. Buka: `https://ari-rusmawan-portfolio.vercel.app/admin/profile`
+3. Coba upload foto profil
+4. File akan tersimpan di Vercel Blob Storage
+
+## 📝 Spesifikasi Upload
+
+### Foto Profil
+
 - **Format**: JPG, PNG, WebP
-- **Ukuran**: Maksimal 10MB
+- **Ukuran Max**: 10MB
 - **Rekomendasi**: 1200x1200px (persegi)
 
-### ✅ CV/Resume
+### CV/Resume
 
-- **Lokasi**: `/admin/profile`
 - **Format**: PDF
-- **Ukuran**: Maksimal 10MB
+- **Ukuran Max**: 10MB
 
-### ✅ Gambar Project
+### Gambar Project
 
-- **Lokasi**: `/admin/projects`
 - **Format**: JPG, PNG, WebP
-- **Ukuran**: Maksimal 10MB
-
-## 🔍 Verifikasi
-
-Untuk memastikan Blob Storage berfungsi:
-
-1. Login ke admin panel: `/admin/login`
-2. Buka halaman profile: `/admin/profile`
-3. Coba upload foto profil
-4. Jika berhasil, foto akan muncul dan URL-nya akan tersimpan di database
+- **Ukuran Max**: 10MB
 
 ## 🐛 Troubleshooting
 
-### Error: "BLOB_READ_WRITE_TOKEN is not defined"
+### Error: "BLOB_READ_WRITE_TOKEN not found"
 
-**Solusi**:
+**Di Local Development:**
 
-1. Pastikan Blob store sudah di-connect ke project
-2. Redeploy aplikasi
-3. Untuk local: jalankan `vercel env pull .env.local`
+- ✅ Ini normal! Upload akan menggunakan filesystem lokal
+- ✅ Lihat warning di console, tapi upload tetap berfungsi
 
-### Error: "Upload failed"
+**Di Production (Vercel):**
 
-**Solusi**:
+- ❌ Ini error! Anda perlu setup Vercel Blob Storage
+- Ikuti langkah di atas untuk setup Blob store
 
-1. Cek ukuran file (max 10MB)
-2. Cek format file (harus JPG, PNG, atau WebP untuk gambar)
-3. Cek logs di Vercel Dashboard → Deployments → [pilih deployment] → Functions
+### Upload berhasil tapi gambar tidak muncul
 
-### File tidak muncul setelah upload
+**Di Local:**
 
-**Solusi**:
+- Cek folder `public/uploads/[type]/`
+- Pastikan file ada di sana
+- Refresh browser
 
-1. Cek apakah URL tersimpan di database
-2. Cek Vercel Blob Dashboard untuk melihat file yang ter-upload
-3. Pastikan file memiliki `access: 'public'`
+**Di Production:**
 
-## 💰 Pricing
+- Buka Vercel Dashboard → Storage → Blob
+- Cek apakah file ter-upload
+- Pastikan URL tersimpan di database
 
-Vercel Blob Storage:
+### File size too large
 
-- **Free tier**: 500MB storage + 5GB bandwidth/month
-- **Pro**: $0.15/GB storage + $0.30/GB bandwidth
+- Maksimal ukuran file adalah **10MB**
+- Kompres gambar Anda terlebih dahulu
+- Gunakan tools seperti TinyPNG atau Squoosh
 
-Untuk portfolio personal, free tier biasanya sudah cukup.
+## 💰 Vercel Blob Pricing
 
-## 📚 Dokumentasi
+**Free Tier** (cukup untuk portfolio):
 
-- [Vercel Blob Docs](https://vercel.com/docs/storage/vercel-blob)
+- 500MB storage
+- 5GB bandwidth per bulan
+
+**Pro Tier** (jika perlu lebih):
+
+- $0.15/GB storage
+- $0.30/GB bandwidth
+
+## 📚 Referensi
+
+- [Vercel Blob Documentation](https://vercel.com/docs/storage/vercel-blob)
 - [Vercel Blob Quickstart](https://vercel.com/docs/storage/vercel-blob/quickstart)
+- [Vercel Blob Pricing](https://vercel.com/docs/storage/vercel-blob/usage-and-pricing)
 
 ---
 
-**Status**: ✅ API Upload sudah diupdate untuk menggunakan Vercel Blob
+**Status Saat Ini**:
+
+- ✅ Local Development: Siap digunakan (filesystem)
+- ⏳ Production: Perlu setup Vercel Blob Storage

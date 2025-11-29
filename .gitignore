@@ -49,3 +49,7 @@ prompt
 server.log
 !.env.example
 .env*.local
+
+# local uploads (use Vercel Blob in production)
+public/uploads/*
+!public/uploads/.gitkeep

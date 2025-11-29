@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { put } from '@vercel/blob';
+import { writeFile, mkdir } from 'fs/promises';
+import { join } from 'path';
+import { existsSync } from 'fs';
 
 export async function POST(request: NextRequest) {
   try {
@@ -40,19 +43,49 @@ export async function POST(request: NextRequest) {
     // Generate unique filename
     const timestamp = Date.now();
     const sanitizedFilename = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-    const filename = `${type}/${timestamp}-${sanitizedFilename}`;
+    
+    // Check if we have Vercel Blob token (production)
+    const hasVercelBlob = !!process.env.BLOB_READ_WRITE_TOKEN;
 
-    // Upload to Vercel Blob
-    const blob = await put(filename, file, {
-      access: 'public',
-      addRandomSuffix: false,
-    });
+    if (hasVercelBlob) {
+      // Use Vercel Blob Storage (Production)
+      const filename = `${type}/${timestamp}-${sanitizedFilename}`;
+      
+      const blob = await put(filename, file, {
+        access: 'public',
+        addRandomSuffix: false,
+      });
 
-    return NextResponse.json({
-      message: 'File uploaded successfully',
-      url: blob.url,
-      filename: blob.pathname
-    });
+      return NextResponse.json({
+        message: 'File uploaded successfully',
+        url: blob.url,
+        filename: blob.pathname
+      });
+    } else {
+      // Fallback to local filesystem (Development)
+      console.warn('⚠️ BLOB_READ_WRITE_TOKEN not found. Using local filesystem fallback.');
+      console.warn('⚠️ This will NOT work in Vercel production. Please setup Vercel Blob Storage.');
+      
+      const uploadDir = join(process.cwd(), 'public', 'uploads', type);
+      if (!existsSync(uploadDir)) {
+        await mkdir(uploadDir, { recursive: true });
+      }
+
+      const filename = `${timestamp}-${sanitizedFilename}`;
+      const filepath = join(uploadDir, filename);
+
+      const bytes = await file.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      await writeFile(filepath, buffer);
+
+      const fileUrl = `/uploads/${type}/${filename}`;
+
+      return NextResponse.json({
+        message: 'File uploaded successfully (local)',
+        url: fileUrl,
+        filename: filename
+      });
+    }
 
   } catch (error) {
     console.error('Upload error:', error);
@@ -63,5 +96,6 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export const runtime = 'edge';
+// Only use edge runtime if Vercel Blob is available
+export const runtime = process.env.BLOB_READ_WRITE_TOKEN ? 'edge' : 'nodejs';
 export const maxDuration = 30;
