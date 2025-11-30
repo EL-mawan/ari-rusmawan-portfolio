@@ -23,7 +23,8 @@ export default function AdminSettings() {
     twitter_url: '',
     phone: '',
     location: '',
-    logo_url: ''
+    logo_url: '',
+    hero_background_url: ''
   })
   
   const { toast } = useToast()
@@ -133,6 +134,58 @@ export default function AdminSettings() {
     }
   }
 
+  const handleHeroBgUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    setIsUploading(true)
+    try {
+      const uploadFormData = new FormData()
+      uploadFormData.append('file', file)
+      uploadFormData.append('type', 'hero-bg')
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: uploadFormData,
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        setSettings(prev => ({
+          ...prev,
+          hero_background_url: data.url
+        }))
+        toast({
+          title: "Berhasil",
+          description: "Background hero berhasil diunggah",
+        })
+      } else {
+        toast({
+          title: "Error",
+          description: data.error || "Gagal mengunggah background",
+          variant: "destructive"
+        })
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Terjadi kesalahan saat mengunggah",
+        variant: "destructive"
+      })
+    } finally {
+      setIsUploading(false)
+      e.target.value = ''
+    }
+  }
+
+  const removeHeroBg = () => {
+    setSettings(prev => ({
+      ...prev,
+      hero_background_url: ''
+    }))
+  }
+
   const removeLogo = () => {
     setSettings(prev => ({
       ...prev,
@@ -206,6 +259,61 @@ export default function AdminSettings() {
                 </div>
                 <p className="text-xs text-muted-foreground text-center">
                   Rekomendasi: PNG/SVG dengan background transparan, tinggi 40-60px
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Hero Background</CardTitle>
+              <CardDescription>
+                Upload gambar background untuk bagian hero di halaman depan.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex flex-col items-center gap-4">
+                {settings.hero_background_url ? (
+                  <div className="relative group w-full max-w-md">
+                    <img 
+                      src={settings.hero_background_url} 
+                      alt="Hero Background" 
+                      className="w-full h-48 object-cover border-2 border-primary/20 rounded-lg transition-all duration-300 group-hover:border-primary/40"
+                    />
+                    <button
+                      type="button"
+                      onClick={removeHeroBg}
+                      className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1.5 hover:bg-destructive/90 transition-all duration-200 hover:scale-110"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="w-full max-w-md h-48 rounded-lg bg-primary/10 flex items-center justify-center border-2 border-primary/20 border-dashed">
+                    <ImageIcon className="w-12 h-12 text-primary/40" />
+                  </div>
+                )}
+                
+                <div className="flex items-center gap-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => document.getElementById('hero-bg-upload')?.click()}
+                    disabled={isUploading}
+                  >
+                    <Upload className="w-4 h-4 mr-2" />
+                    {isUploading ? 'Mengunggah...' : 'Upload Background'}
+                  </Button>
+                  <input
+                    id="hero-bg-upload"
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleHeroBgUpload}
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground text-center">
+                  Rekomendasi: Gambar resolusi tinggi (1920x1080px), format JPG/PNG/WEBP
                 </p>
               </div>
             </CardContent>
