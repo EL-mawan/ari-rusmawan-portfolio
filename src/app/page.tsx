@@ -259,7 +259,7 @@ const Portfolio = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-background/80 backdrop-blur-md border-b z-50">
+      <nav className="fixed top-0 w-full bg-background/95 backdrop-blur-lg border-b shadow-sm z-50 transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
@@ -267,32 +267,53 @@ const Portfolio = () => {
                 <img 
                   src={settings.logo_url} 
                   alt="Logo" 
-                  className="h-12 w-auto object-contain cursor-pointer" 
+                  className="h-10 sm:h-12 w-auto object-contain cursor-pointer transition-transform duration-300 hover:scale-110" 
                   onClick={() => scrollToSection('home')}
                 />
               ) : (
-                <span className="text-xl font-bold text-primary">AR</span>
+                <span className="text-xl font-bold text-primary cursor-pointer hover:scale-110 transition-transform duration-300" onClick={() => scrollToSection('home')}>AR</span>
               )}
             </div>
             
-            <div className="hidden md:flex items-center space-x-8">
-              <button onClick={() => scrollToSection('home')} className="hover:text-primary transition-colors">Beranda</button>
-              <button onClick={() => scrollToSection('about')} className="hover:text-primary transition-colors">Tentang</button>
-              <button onClick={() => scrollToSection('education')} className="hover:text-primary transition-colors">Pendidikan</button>
-              <button onClick={() => scrollToSection('experience')} className="hover:text-primary transition-colors">Pengalaman</button>
-              <button onClick={() => scrollToSection('skills')} className="hover:text-primary transition-colors">Keahlian</button>
-              <button onClick={() => scrollToSection('projects')} className="hover:text-primary transition-colors">Proyek</button>
-              <button onClick={() => scrollToSection('contact')} className="hover:text-primary transition-colors">Kontak</button>
-              <button onClick={toggleTheme} className="p-2 rounded-lg hover:bg-accent transition-colors">
+            <div className="hidden md:flex items-center space-x-1 lg:space-x-4">
+              <button onClick={() => scrollToSection('home')} className="px-3 py-2 rounded-lg text-sm lg:text-base font-medium hover:text-primary hover:bg-primary/10 transition-all duration-300 relative group">
+                Beranda
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
+              </button>
+              <button onClick={() => scrollToSection('about')} className="px-3 py-2 rounded-lg text-sm lg:text-base font-medium hover:text-primary hover:bg-primary/10 transition-all duration-300 relative group">
+                Tentang
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
+              </button>
+              <button onClick={() => scrollToSection('education')} className="px-3 py-2 rounded-lg text-sm lg:text-base font-medium hover:text-primary hover:bg-primary/10 transition-all duration-300 relative group">
+                Pendidikan
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
+              </button>
+              <button onClick={() => scrollToSection('experience')} className="px-3 py-2 rounded-lg text-sm lg:text-base font-medium hover:text-primary hover:bg-primary/10 transition-all duration-300 relative group">
+                Pengalaman
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
+              </button>
+              <button onClick={() => scrollToSection('skills')} className="px-3 py-2 rounded-lg text-sm lg:text-base font-medium hover:text-primary hover:bg-primary/10 transition-all duration-300 relative group">
+                Keahlian
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
+              </button>
+              <button onClick={() => scrollToSection('projects')} className="px-3 py-2 rounded-lg text-sm lg:text-base font-medium hover:text-primary hover:bg-primary/10 transition-all duration-300 relative group">
+                Proyek
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
+              </button>
+              <button onClick={() => scrollToSection('contact')} className="px-3 py-2 rounded-lg text-sm lg:text-base font-medium hover:text-primary hover:bg-primary/10 transition-all duration-300 relative group">
+                Kontak
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
+              </button>
+              <button onClick={toggleTheme} className="p-2 rounded-lg hover:bg-primary/10 hover:text-primary transition-all duration-300 hover:scale-110">
                 {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
               </button>
             </div>
 
-            <div className="md:hidden flex items-center space-x-4">
-              <button onClick={toggleTheme} className="p-2 rounded-lg hover:bg-accent transition-colors">
+            <div className="md:hidden flex items-center space-x-2">
+              <button onClick={toggleTheme} className="p-2 rounded-lg hover:bg-primary/10 hover:text-primary transition-all duration-300 hover:scale-110">
                 {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
               </button>
-              <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2 rounded-lg hover:bg-accent transition-colors">
+              <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2 rounded-lg hover:bg-primary/10 hover:text-primary transition-all duration-300 hover:scale-110">
                 {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </button>
             </div>
@@ -301,15 +322,15 @@ const Portfolio = () => {
 
         {/* Mobile menu */}
         {isMenuOpen && (
-          <div className="md:hidden bg-background border-b">
-            <div className="px-4 py-2 space-y-2">
-              <button onClick={() => scrollToSection('home')} className="block w-full text-left py-2 hover:text-primary transition-colors">Beranda</button>
-              <button onClick={() => scrollToSection('about')} className="block w-full text-left py-2 hover:text-primary transition-colors">Tentang</button>
-              <button onClick={() => scrollToSection('education')} className="block w-full text-left py-2 hover:text-primary transition-colors">Pendidikan</button>
-              <button onClick={() => scrollToSection('experience')} className="block w-full text-left py-2 hover:text-primary transition-colors">Pengalaman</button>
-              <button onClick={() => scrollToSection('skills')} className="block w-full text-left py-2 hover:text-primary transition-colors">Keahlian</button>
-              <button onClick={() => scrollToSection('projects')} className="block w-full text-left py-2 hover:text-primary transition-colors">Proyek</button>
-              <button onClick={() => scrollToSection('contact')} className="block w-full text-left py-2 hover:text-primary transition-colors">Kontak</button>
+          <div className="md:hidden bg-background/95 backdrop-blur-lg border-b shadow-lg animate-slide-down">
+            <div className="px-4 py-3 space-y-1">
+              <button onClick={() => scrollToSection('home')} className="block w-full text-left px-4 py-3 rounded-lg hover:bg-primary/10 hover:text-primary transition-all duration-300 font-medium">Beranda</button>
+              <button onClick={() => scrollToSection('about')} className="block w-full text-left px-4 py-3 rounded-lg hover:bg-primary/10 hover:text-primary transition-all duration-300 font-medium">Tentang</button>
+              <button onClick={() => scrollToSection('education')} className="block w-full text-left px-4 py-3 rounded-lg hover:bg-primary/10 hover:text-primary transition-all duration-300 font-medium">Pendidikan</button>
+              <button onClick={() => scrollToSection('experience')} className="block w-full text-left px-4 py-3 rounded-lg hover:bg-primary/10 hover:text-primary transition-all duration-300 font-medium">Pengalaman</button>
+              <button onClick={() => scrollToSection('skills')} className="block w-full text-left px-4 py-3 rounded-lg hover:bg-primary/10 hover:text-primary transition-all duration-300 font-medium">Keahlian</button>
+              <button onClick={() => scrollToSection('projects')} className="block w-full text-left px-4 py-3 rounded-lg hover:bg-primary/10 hover:text-primary transition-all duration-300 font-medium">Proyek</button>
+              <button onClick={() => scrollToSection('contact')} className="block w-full text-left px-4 py-3 rounded-lg hover:bg-primary/10 hover:text-primary transition-all duration-300 font-medium">Kontak</button>
             </div>
           </div>
         )}
