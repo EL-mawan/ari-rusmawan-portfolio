@@ -31,6 +31,7 @@ import {
   CheckCircle,
   Loader2
 } from 'lucide-react';
+import Spline from '@splinetool/react-spline';
 
 interface Profile {
   fullName: string;
@@ -339,6 +340,10 @@ const Portfolio = () => {
       {/* Hero Section */}
       <section id="home" className="min-h-screen flex items-center justify-center px-4 pt-16 relative overflow-hidden">
         {/* Animated Background */}
+        <div className="absolute inset-0">
+          <Spline scene="https://prod.spline.design/Jfzqy6dB3qWXIU8tzENNFQin/scene.splinecode" />
+        </div>
+        <div className="absolute inset-0 bg-linear-to-b from-background/80 via-background/60 to-background/80"></div>
         <div className="absolute inset-0 -z-10">
           {/* Gradient Background */}
           <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-background to-primary/10 animate-gradient-shift"></div>
