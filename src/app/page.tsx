@@ -344,21 +344,7 @@ const Portfolio = () => {
           <Spline scene="https://prod.spline.design/Jfzqy6dB3qWXIU8tzENNFQin/scene.splinecode" />
         </div>
         <div className="absolute inset-0 bg-linear-to-b from-background/80 via-background/60 to-background/80"></div>
-        <div className="absolute inset-0 -z-10">
-          {/* Gradient Background */}
-          <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-background to-primary/10 animate-gradient-shift"></div>
-          
-          {/* Floating Particles */}
-          <div className="absolute inset-0">
-            <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-float"></div>
-            <div className="absolute top-40 right-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-float-delayed"></div>
-            <div className="absolute bottom-20 left-1/4 w-80 h-80 bg-primary/8 rounded-full blur-3xl animate-float-slow"></div>
-            <div className="absolute bottom-40 right-1/3 w-64 h-64 bg-primary/6 rounded-full blur-3xl animate-float-delayed-slow"></div>
-          </div>
-          
-          {/* Grid Pattern Overlay */}
-          <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-        </div>
+
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in-up px-4">
