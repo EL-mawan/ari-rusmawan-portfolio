@@ -334,18 +334,22 @@ const Portfolio = () => {
             <Button size="lg" className="text-lg px-8 py-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105" onClick={() => scrollToSection('contact')}>
               Hubungi Saya <Send className="ml-2 h-5 w-5" />
             </Button>
-            {profile?.cvPath && (
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="text-lg px-8 py-6 rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 bg-background/50 backdrop-blur-sm border-primary/20" 
-                onClick={() => window.open(profile.cvPath, '_blank')}
-              >
-                CV Saya <Download className="ml-2 h-5 w-5" />
-              </Button>
-            )}
-            <Button size="lg" variant="outline" className="text-lg px-8 py-6 rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 bg-background/50 backdrop-blur-sm border-primary/20" onClick={() => scrollToSection('projects')}>
-              Lihat Proyek <ExternalLink className="ml-2 h-5 w-5" />
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="text-lg px-8 py-6 rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 bg-background/50 backdrop-blur-sm border-primary/20" 
+              onClick={() => {
+                if (profile?.cvPath) {
+                  window.open(profile.cvPath, '_blank');
+                } else {
+                  toast({
+                    title: "Info",
+                    description: "Link CV belum tersedia.",
+                  });
+                }
+              }}
+            >
+              CV Saya <Download className="ml-2 h-5 w-5" />
             </Button>
           </div>
         </div>
