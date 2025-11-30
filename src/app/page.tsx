@@ -267,7 +267,7 @@ const Portfolio = () => {
                 <img 
                   src={settings.logo_url} 
                   alt="Logo" 
-                  className="h-8 w-auto object-contain cursor-pointer" 
+                  className="h-12 w-auto object-contain cursor-pointer" 
                   onClick={() => scrollToSection('home')}
                 />
               ) : (

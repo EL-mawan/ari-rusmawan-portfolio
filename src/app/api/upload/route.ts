@@ -21,7 +21,8 @@ export async function POST(request: NextRequest) {
     const allowedTypes = {
       cv: ['application/pdf'],
       project: ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'],
-      profile: ['image/jpeg', 'image/png', 'image/webp', 'image/jpg']
+      profile: ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'],
+      logo: ['image/jpeg', 'image/png', 'image/webp', 'image/jpg', 'image/svg+xml']
     };
 
     if (!allowedTypes[type as keyof typeof allowedTypes]?.includes(file.type)) {
