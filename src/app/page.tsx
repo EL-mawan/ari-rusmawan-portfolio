@@ -336,8 +336,7 @@ const Portfolio = () => {
             </Button>
             <Button 
               size="lg" 
-              variant="outline" 
-              className="text-lg px-8 py-6 rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 bg-background/50 backdrop-blur-sm border-primary/20" 
+              className="text-lg px-8 py-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105" 
               onClick={() => {
                 if (profile?.cvPath) {
                   window.open(profile.cvPath, '_blank');
