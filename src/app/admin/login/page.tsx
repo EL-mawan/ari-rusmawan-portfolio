@@ -149,11 +149,7 @@ export default function AdminLogin() {
               </Button>
             </form>
 
-            <div className="mt-6 text-center">
-              <p className="text-sm text-muted-foreground">
-                Demo kredensial: admin@example.com / admin123
-              </p>
-            </div>
+
           </CardContent>
         </Card>
       </div>
