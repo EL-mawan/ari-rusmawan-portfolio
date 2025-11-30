@@ -376,7 +376,7 @@ const Portfolio = () => {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="flex justify-center">
               {profile?.profileImage ? (
-                <div className="w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-primary/20 animate-scale-in animation-delay-200">
+                <div className="w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-primary/20">
                   <img 
                     src={profile.profileImage} 
                     alt={profile.fullName || 'Profile'} 
@@ -391,7 +391,7 @@ const Portfolio = () => {
                 </div>
               )}
             </div>
-            <div className="space-y-6 animate-slide-in-right animation-delay-300">
+            <div className="space-y-6">
               <p className="text-lg leading-relaxed whitespace-pre-wrap">
                 {profile?.bio || 'I am a dedicated Information Technology Education professional...'}
               </p>
@@ -453,7 +453,7 @@ const Portfolio = () => {
       {/* Education Section */}
       <section id="education" className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 animate-fade-in-up">Pendidikan</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Pendidikan</h2>
           <div className="space-y-8">
             {education.map((edu, index) => (
               <Card key={index} className="relative">
@@ -486,7 +486,7 @@ const Portfolio = () => {
       {/* Experience Section */}
       <section id="experience" className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 animate-fade-in-up">Pengalaman</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Pengalaman</h2>
           <div className="space-y-8">
             {experiences.map((exp, index) => (
               <Card key={index} className="relative">
@@ -534,7 +534,7 @@ const Portfolio = () => {
       {/* Skills Section */}
       <section id="skills" className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 animate-fade-in-up">Keahlian</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Keahlian</h2>
           
           <div className="flex flex-wrap justify-center gap-2 mb-8">
             <Button
@@ -576,7 +576,7 @@ const Portfolio = () => {
       {/* Projects Section */}
       <section id="projects" className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 animate-fade-in-up">Proyek</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Proyek</h2>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project) => (
@@ -631,10 +631,10 @@ const Portfolio = () => {
       {/* Contact Section */}
       <section id="contact" className="py-20 px-4">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 animate-fade-in-up">Hubungi Saya</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Hubungi Saya</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-            <div className="space-y-6 animate-slide-in-right animation-delay-300">
+            <div className="space-y-6">
               <h3 className="text-2xl font-semibold">Mari Terhubung</h3>
               <p className="text-muted-foreground">
                 Saya selalu tertarik mendengar tentang peluang baru dan proyek yang menarik. 
