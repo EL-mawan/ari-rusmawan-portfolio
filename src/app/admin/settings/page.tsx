@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { Save } from 'lucide-react'
+import { Save, Upload, X, Image as ImageIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -13,6 +13,7 @@ import { Separator } from '@/components/ui/separator'
 export default function AdminSettings() {
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
+  const [isUploading, setIsUploading] = useState(false)
   const [settings, setSettings] = useState({
     site_title: '',
     site_description: '',
@@ -21,7 +22,8 @@ export default function AdminSettings() {
     linkedin_url: '',
     twitter_url: '',
     phone: '',
-    location: ''
+    location: '',
+    logo_url: ''
   })
   
   const { toast } = useToast()
@@ -86,6 +88,58 @@ export default function AdminSettings() {
     }
   }
 
+  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    setIsUploading(true)
+    try {
+      const uploadFormData = new FormData()
+      uploadFormData.append('file', file)
+      uploadFormData.append('type', 'logo')
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: uploadFormData,
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        setSettings(prev => ({
+          ...prev,
+          logo_url: data.url
+        }))
+        toast({
+          title: "Berhasil",
+          description: "Logo berhasil diunggah",
+        })
+      } else {
+        toast({
+          title: "Error",
+          description: data.error || "Gagal mengunggah logo",
+          variant: "destructive"
+        })
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Terjadi kesalahan saat mengunggah",
+        variant: "destructive"
+      })
+    } finally {
+      setIsUploading(false)
+      e.target.value = ''
+    }
+  }
+
+  const removeLogo = () => {
+    setSettings(prev => ({
+      ...prev,
+      logo_url: ''
+    }))
+  }
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -102,6 +156,61 @@ export default function AdminSettings() {
         </div>
 
         <form onSubmit={handleSaveSettings} className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Logo Situs</CardTitle>
+              <CardDescription>
+                Upload logo yang akan ditampilkan di navbar.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex flex-col items-center gap-4">
+                {settings.logo_url ? (
+                  <div className="relative group">
+                    <img 
+                      src={settings.logo_url} 
+                      alt="Logo" 
+                      className="h-16 w-auto object-contain border-2 border-primary/20 rounded-lg p-2 transition-all duration-300 group-hover:scale-105 group-hover:border-primary/40"
+                    />
+                    <button
+                      type="button"
+                      onClick={removeLogo}
+                      className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1.5 hover:bg-destructive/90 transition-all duration-200 hover:scale-110"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="h-16 w-32 rounded-lg bg-primary/10 flex items-center justify-center border-2 border-primary/20">
+                    <ImageIcon className="w-8 h-8 text-primary/40" />
+                  </div>
+                )}
+                
+                <div className="flex items-center gap-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => document.getElementById('logo-upload')?.click()}
+                    disabled={isUploading}
+                  >
+                    <Upload className="w-4 h-4 mr-2" />
+                    {isUploading ? 'Mengunggah...' : 'Upload Logo'}
+                  </Button>
+                  <input
+                    id="logo-upload"
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleLogoUpload}
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground text-center">
+                  Rekomendasi: PNG/SVG dengan background transparan, tinggi 40-60px
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
           <Card>
             <CardHeader>
               <CardTitle>Informasi Umum</CardTitle>

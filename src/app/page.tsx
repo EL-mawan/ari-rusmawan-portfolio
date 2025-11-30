@@ -89,6 +89,7 @@ const Portfolio = () => {
   const [mounted, setMounted] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedSkillCategory, setSelectedSkillCategory] = useState('all');
+  const [settings, setSettings] = useState<any>(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -113,12 +114,13 @@ const Portfolio = () => {
       setIsLoading(true);
       try {
         // Fetch all data in parallel
-        const [profileRes, educationRes, experienceRes, skillsRes, projectsRes] = await Promise.all([
+        const [profileRes, educationRes, experienceRes, skillsRes, projectsRes, settingsRes] = await Promise.all([
           fetch('/api/profile').then(r => r.json()),
           fetch('/api/education').then(r => r.json()),
           fetch('/api/experience').then(r => r.json()),
           fetch('/api/skills').then(r => r.json()),
           fetch('/api/projects').then(r => r.json()),
+          fetch('/api/settings').then(r => r.json()),
         ]);
 
         // Set profile data
@@ -158,6 +160,9 @@ const Portfolio = () => {
           // API already parses techStack and images
           setProjects(projectsRes.data);
         }
+
+        // Set settings data
+        setSettings(settingsRes);
       } catch (error) {
         console.error('Error fetching data:', error);
         toast({
@@ -258,7 +263,16 @@ const Portfolio = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <span className="text-xl font-bold text-primary">AR</span>
+              {settings?.logo_url ? (
+                <img 
+                  src={settings.logo_url} 
+                  alt="Logo" 
+                  className="h-8 w-auto object-contain cursor-pointer" 
+                  onClick={() => scrollToSection('home')}
+                />
+              ) : (
+                <span className="text-xl font-bold text-primary">AR</span>
+              )}
             </div>
             
             <div className="hidden md:flex items-center space-x-8">
