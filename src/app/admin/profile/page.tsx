@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { User, Mail, Phone, MapPin, Save, Upload, X, Image as ImageIcon } from 'lucide-react'
+import { User, Mail, Phone, MapPin, Save, Upload, X, Image as ImageIcon, ExternalLink } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -37,7 +37,8 @@ export default function AdminProfile() {
     profileImage: '',
     linkedinUrl: '',
     githubUrl: '',
-    twitterUrl: ''
+    twitterUrl: '',
+    cvPath: ''
   })
   
   const { toast } = useToast()
@@ -71,7 +72,8 @@ export default function AdminProfile() {
           profileImage: profileData.profileImage || '',
           linkedinUrl: socialLinks.linkedin || '',
           githubUrl: socialLinks.github || '',
-          twitterUrl: socialLinks.twitter || ''
+          twitterUrl: socialLinks.twitter || '',
+          cvPath: profileData.cvPath || ''
         })
       }
     } catch (error) {
@@ -160,6 +162,7 @@ export default function AdminProfile() {
           location: formData.location,
           phone: formData.phone,
           emailPublic: formData.emailPublic,
+          cvPath: formData.cvPath,
           profileImage: formData.profileImage,
           socialLinks
         }),
@@ -308,6 +311,23 @@ export default function AdminProfile() {
                   rows={4}
                   className="transition-all duration-200 focus:scale-[1.01]"
                 />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="cvPath">Link CV / Resume</Label>
+                <div className="relative">
+                  <ExternalLink className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="cvPath"
+                    value={formData.cvPath}
+                    onChange={(e) => setFormData({...formData, cvPath: e.target.value})}
+                    placeholder="https://docs.google.com/..."
+                    className="pl-10 transition-all duration-200 focus:scale-[1.01]"
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Masukkan link ke CV Anda (Google Drive, LinkedIn, atau file yang diupload)
+                </p>
               </div>
             </CardContent>
           </Card>

@@ -331,17 +331,21 @@ const Portfolio = () => {
             {profile?.bio || 'Passionate about educational technology, quality software development, and efficient project management. Bridging the gap between education and industry through innovative solutions.'}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up animation-delay-400">
+            <Button size="lg" className="text-lg px-8 py-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105" onClick={() => scrollToSection('contact')}>
+              Hubungi Saya <Send className="ml-2 h-5 w-5" />
+            </Button>
             {profile?.cvPath && (
-              <Button size="lg" className="gap-2 hover:scale-105 transition-transform duration-200" asChild>
-                <a href={profile.cvPath} download>
-                  <Download className="h-4 w-4" />
-                  Unduh CV
-                </a>
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="text-lg px-8 py-6 rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 bg-background/50 backdrop-blur-sm border-primary/20" 
+                onClick={() => window.open(profile.cvPath, '_blank')}
+              >
+                CV Saya <Download className="ml-2 h-5 w-5" />
               </Button>
             )}
-            <Button variant="outline" size="lg" onClick={() => scrollToSection('contact')} className="gap-2 hover:scale-105 transition-transform duration-200">
-              <Mail className="h-4 w-4" />
-              Hubungi Saya
+            <Button size="lg" variant="outline" className="text-lg px-8 py-6 rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 bg-background/50 backdrop-blur-sm border-primary/20" onClick={() => scrollToSection('projects')}>
+              Lihat Proyek <ExternalLink className="ml-2 h-5 w-5" />
             </Button>
           </div>
         </div>

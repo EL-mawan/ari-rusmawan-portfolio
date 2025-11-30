@@ -33,7 +33,7 @@ export async function GET() {
 
 export async function PUT(request: NextRequest) {
   try {
-    const { fullName, title, bio, location, phone, emailPublic, profileImage, socialLinks } = await request.json();
+    const { fullName, title, bio, location, phone, emailPublic, cvPath, profileImage, socialLinks } = await request.json();
 
     // Get the first profile
     const existingProfile = await db.profile.findFirst();
@@ -55,6 +55,7 @@ export async function PUT(request: NextRequest) {
         location: location || null,
         phone: phone || null,
         emailPublic: emailPublic || null,
+        cvPath: cvPath || null,
         profileImage: profileImage || null,
         socialLinks: socialLinks ? JSON.stringify(socialLinks) : null,
       },
@@ -72,7 +73,7 @@ export async function PUT(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { fullName, title, bio, location, phone, emailPublic, profileImage, socialLinks } = await request.json();
+    const { fullName, title, bio, location, phone, emailPublic, cvPath, profileImage, socialLinks } = await request.json();
 
     // Validate required fields
     if (!fullName || !title) {
@@ -102,6 +103,7 @@ export async function POST(request: NextRequest) {
         location: location || null,
         phone: phone || null,
         emailPublic: emailPublic || null,
+        cvPath: cvPath || null,
         profileImage: profileImage || null,
         socialLinks: socialLinks ? JSON.stringify(socialLinks) : null,
       },
