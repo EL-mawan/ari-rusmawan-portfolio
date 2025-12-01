@@ -735,7 +735,7 @@ const Portfolio = () => {
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleContactSubmit} className="space-y-4">
-                  <div>
+                  <div className="space-y-3">
                     <Label htmlFor="name">Nama</Label>
                     <Input
                       id="name"
@@ -744,7 +744,7 @@ const Portfolio = () => {
                       required
                     />
                   </div>
-                  <div>
+                  <div className="space-y-3">
                     <Label htmlFor="email">Email</Label>
                     <Input
                       id="email"
@@ -754,7 +754,7 @@ const Portfolio = () => {
                       required
                     />
                   </div>
-                  <div>
+                  <div className="space-y-3">
                     <Label htmlFor="subject">Subjek</Label>
                     <Input
                       id="subject"
@@ -763,7 +763,7 @@ const Portfolio = () => {
                       required
                     />
                   </div>
-                  <div>
+                  <div className="space-y-3">
                     <Label htmlFor="message">Pesan</Label>
                     <Textarea
                       id="message"
