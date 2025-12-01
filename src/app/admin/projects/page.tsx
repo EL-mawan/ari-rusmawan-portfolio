@@ -597,62 +597,66 @@ export default function AdminProjects() {
                 </div>
                 
                 {/* Action Buttons */}
-                <div className="flex flex-wrap gap-2 pt-2 border-t">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => openEditModal(project)}
-                    className="flex-1"
-                  >
-                    <Edit className="w-3 h-3 mr-1" />
-                    Edit
-                  </Button>
+                <div className="space-y-2 pt-2 border-t">
+                  {/* Primary Actions */}
+                  <div className="grid grid-cols-2 gap-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => openEditModal(project)}
+                      className="w-full"
+                    >
+                      <Edit className="w-3 h-3 mr-1" />
+                      Edit
+                    </Button>
+                    
+                    <Button
+                      size="sm"
+                      variant={project.featured ? "default" : "outline"}
+                      onClick={() => handleToggleFeatured(project)}
+                      className="w-full"
+                    >
+                      {project.featured ? (
+                        <><StarOff className="w-3 h-3 mr-1" />Batal</>
+                      ) : (
+                        <><Star className="w-3 h-3 mr-1" />Unggulan</>
+                      )}
+                    </Button>
+                  </div>
                   
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => handleToggleFeatured(project)}
-                    className="flex-1"
-                  >
-                    {project.featured ? (
-                      <><StarOff className="w-3 h-3 mr-1" />Batal</>
-                    ) : (
-                      <><Star className="w-3 h-3 mr-1" />Unggulan</>
-                    )}
-                  </Button>
+                  {/* Links */}
+                  {(project.liveUrl || project.repoUrl) && (
+                    <div className="grid grid-cols-2 gap-2">
+                      {project.liveUrl && (
+                        <Button size="sm" variant="outline" className="w-full" asChild>
+                          <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+                            <ExternalLink className="w-3 h-3 mr-1" />
+                            Demo
+                          </a>
+                        </Button>
+                      )}
+                      {project.repoUrl && (
+                        <Button size="sm" variant="outline" className="w-full" asChild>
+                          <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">
+                            <Github className="w-3 h-3 mr-1" />
+                            Code
+                          </a>
+                        </Button>
+                      )}
+                    </div>
+                  )}
                   
+                  {/* Delete Button */}
                   <Button
                     size="sm"
                     variant="outline"
                     onClick={() => handleDeleteProject(project.id)}
-                    className="text-destructive hover:bg-destructive hover:text-destructive-foreground"
+                    className="w-full text-destructive hover:bg-destructive hover:text-destructive-foreground"
                   >
                     <Trash2 className="w-3 h-3 mr-1" />
-                    Hapus
+                    Hapus Proyek
                   </Button>
                 </div>
-                
-                {/* Links */}
-                {(project.liveUrl || project.repoUrl) && (
-                  <div className="flex gap-2">
-                    {project.liveUrl && (
-                      <Button size="sm" variant="outline" className="flex-1" asChild>
-                        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                          <ExternalLink className="w-3 h-3 mr-1" />
-                          Demo
-                        </a>
-                      </Button>
-                    )}
-                    {project.repoUrl && (
-                      <Button size="sm" variant="outline" className="flex-1" asChild>
-                        <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">
-                          <Github className="w-3 h-3 mr-1" />
-                          Code
-                        </a>
-                      </Button>
-                    )}
-                  </div>
-                )}
               </CardContent>
             </Card>
           ))}
