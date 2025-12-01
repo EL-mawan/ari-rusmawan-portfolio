@@ -107,13 +107,22 @@ export default function AdminSettings() {
       const data = await response.json()
 
       if (response.ok) {
-        setSettings(prev => ({
-          ...prev,
+        const newSettings = {
+          ...settings,
           logo_url: data.url
-        }))
+        }
+        setSettings(newSettings)
+        
+        // Auto save to database
+        await fetch('/api/settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ logo_url: data.url }),
+        })
+
         toast({
           title: "Berhasil",
-          description: "Logo berhasil diunggah",
+          description: "Logo berhasil diunggah dan disimpan",
         })
       } else {
         toast({
@@ -152,13 +161,22 @@ export default function AdminSettings() {
       const data = await response.json()
 
       if (response.ok) {
-        setSettings(prev => ({
-          ...prev,
+        const newSettings = {
+          ...settings,
           hero_background_url: data.url
-        }))
+        }
+        setSettings(newSettings)
+        
+        // Auto save to database
+        await fetch('/api/settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ hero_background_url: data.url }),
+        })
+
         toast({
           title: "Berhasil",
-          description: "Background hero berhasil diunggah",
+          description: "Background hero berhasil diunggah dan disimpan",
         })
       } else {
         toast({
@@ -179,18 +197,44 @@ export default function AdminSettings() {
     }
   }
 
-  const removeHeroBg = () => {
-    setSettings(prev => ({
-      ...prev,
+  const removeHeroBg = async () => {
+    const newSettings = {
+      ...settings,
       hero_background_url: ''
-    }))
+    }
+    setSettings(newSettings)
+    
+    // Auto save removal
+    await fetch('/api/settings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ hero_background_url: '' }),
+    })
+    
+    toast({
+      title: "Berhasil",
+      description: "Background hero berhasil dihapus",
+    })
   }
 
-  const removeLogo = () => {
-    setSettings(prev => ({
-      ...prev,
+  const removeLogo = async () => {
+    const newSettings = {
+      ...settings,
       logo_url: ''
-    }))
+    }
+    setSettings(newSettings)
+    
+    // Auto save removal
+    await fetch('/api/settings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ logo_url: '' }),
+    })
+    
+    toast({
+      title: "Berhasil",
+      description: "Logo berhasil dihapus",
+    })
   }
 
   if (isLoading) {
@@ -258,7 +302,7 @@ export default function AdminSettings() {
                   />
                 </div>
                 <p className="text-xs text-muted-foreground text-center">
-                  Rekomendasi: PNG/SVG dengan background transparan, tinggi 40-60px
+                  Rekomendasi: PNG/SVG/GIF dengan background transparan, tinggi 40-60px
                 </p>
               </div>
             </CardContent>
@@ -313,7 +357,7 @@ export default function AdminSettings() {
                   />
                 </div>
                 <p className="text-xs text-muted-foreground text-center">
-                  Rekomendasi: Gambar resolusi tinggi (1920x1080px), format JPG/PNG/WEBP
+                  Rekomendasi: Gambar resolusi tinggi (1920x1080px), format JPG/PNG/WEBP/GIF
                 </p>
               </div>
             </CardContent>
