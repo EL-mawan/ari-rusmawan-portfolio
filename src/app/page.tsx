@@ -780,7 +780,7 @@ const Portfolio = () => {
       <footer className="py-8 px-4 border-t">
         <div className="max-w-6xl mx-auto text-center">
           <p className="text-muted-foreground">
-            © {new Date().getFullYear()} {profile?.fullName || 'Ari Rusmawan'}. Hak Cipta Dilindungi. Dibuat dengan Next.js dan Tailwind CSS.
+            © 2024 {profile?.fullName || 'Ari Rusmawan'}. Hak Cipta Dilindungi. Dibuat dengan Next.js dan Tailwind CSS.
           </p>
         </div>
       </footer>
