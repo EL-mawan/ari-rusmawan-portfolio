@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Eye, EyeOff, Lock, Mail, Shield, Home, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -17,8 +17,23 @@ export default function AdminLogin() {
 
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [settings, setSettings] = useState<any>(null)
   const router = useRouter()
   const { toast } = useToast()
+
+  // Fetch settings for logo
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const response = await fetch('/api/settings')
+        const data = await response.json()
+        setSettings(data)
+      } catch (error) {
+        console.error('Error fetching settings:', error)
+      }
+    }
+    fetchSettings()
+  }, [])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -87,11 +102,19 @@ export default function AdminLogin() {
           <div className="h-1 bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600"></div>
           
           <CardHeader className="text-center pb-8 pt-8 space-y-4">
-            {/* Icon with Gradient Background */}
+            {/* Logo with Gradient Background */}
             <div className="relative mx-auto w-20 h-20 mb-2">
               <div className="absolute inset-0 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-2xl rotate-6 animate-pulse"></div>
-              <div className="relative w-full h-full bg-gradient-to-br from-violet-500 to-indigo-500 rounded-2xl flex items-center justify-center shadow-lg">
-                <Shield className="w-10 h-10 text-white" />
+              <div className="relative w-full h-full bg-gradient-to-br from-violet-500 to-indigo-500 rounded-2xl flex items-center justify-center shadow-lg overflow-hidden">
+                {settings?.logo_url ? (
+                  <img 
+                    src={settings.logo_url} 
+                    alt="Logo" 
+                    className="w-14 h-14 object-contain"
+                  />
+                ) : (
+                  <span className="text-3xl font-bold text-white">AR</span>
+                )}
               </div>
             </div>
             
@@ -101,7 +124,7 @@ export default function AdminLogin() {
               </CardTitle>
               <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
                 <Sparkles className="w-4 h-4 text-violet-500" />
-                <p>Selamat datang kembali!</p>
+                <p>Katuran Rawuh!</p>
               </div>
             </div>
           </CardHeader>
