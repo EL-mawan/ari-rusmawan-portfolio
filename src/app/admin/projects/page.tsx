@@ -565,15 +565,26 @@ export default function AdminProjects() {
                     )}
 
                     {project.images && project.images.length > 0 && (
-                      <div className="flex gap-2 mb-3 overflow-x-auto pb-2">
-                        {project.images.map((img, idx) => (
-                          <img 
-                            key={idx} 
-                            src={img} 
-                            alt={`${project.title} screenshot`} 
-                            className="h-16 w-auto rounded border object-cover"
-                          />
-                        ))}
+                      <div className="mb-3">
+                        <div className="flex gap-3 overflow-x-auto pb-2">
+                          {project.images.map((img, idx) => (
+                            <div key={idx} className="relative group shrink-0">
+                              <img 
+                                src={img} 
+                                alt={`${project.title} screenshot ${idx + 1}`} 
+                                className="h-24 w-32 rounded-lg border-2 border-gray-200 dark:border-gray-700 object-cover hover:border-primary transition-all duration-200 cursor-pointer hover:scale-105"
+                              />
+                              {idx === 0 && (
+                                <Badge variant="secondary" className="absolute top-1 left-1 text-xs">
+                                  Utama
+                                </Badge>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {project.images.length} gambar
+                        </p>
                       </div>
                     )}
                     
