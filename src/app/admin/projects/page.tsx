@@ -48,6 +48,8 @@ export default function AdminProjects() {
   const [searchTerm, setSearchTerm] = useState('')
   const [showFeaturedOnly, setShowFeaturedOnly] = useState(false)
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [editingProject, setEditingProject] = useState<Project | null>(null)
   const [isUploading, setIsUploading] = useState(false)
   const [formData, setFormData] = useState({
     title: '',
@@ -262,6 +264,64 @@ export default function AdminProjects() {
       toast({
         title: "Error",
         description: 'An unexpected error occurred',
+        variant: "destructive"
+      })
+    }
+  }
+
+  const openEditModal = (project: Project) => {
+    setEditingProject(project)
+    setFormData({
+      title: project.title,
+      slug: project.slug,
+      description: project.description || '',
+      techStack: project.techStack?.join(', ') || '',
+      liveUrl: project.liveUrl || '',
+      repoUrl: project.repoUrl || '',
+      featured: project.featured,
+      images: project.images || []
+    })
+    setIsEditModalOpen(true)
+  }
+
+  const handleUpdateProject = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!editingProject) return
+    
+    try {
+      const response = await fetch(`/api/projects/${editingProject.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          techStack: formData.techStack.split(',').map(tech => tech.trim()).filter(Boolean)
+        }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok && data.success) {
+        toast({
+          title: "Berhasil",
+          description: 'Proyek berhasil diperbarui',
+        })
+        setIsEditModalOpen(false)
+        setEditingProject(null)
+        resetForm()
+        fetchProjects()
+      } else {
+        toast({
+          title: "Error",
+          description: data.message || 'Gagal memperbarui proyek',
+          variant: "destructive"
+        })
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: 'Terjadi kesalahan yang tidak terduga',
         variant: "destructive"
       })
     }
@@ -527,7 +587,17 @@ export default function AdminProjects() {
                     <Button
                       size="sm"
                       variant="outline"
+                      onClick={() => openEditModal(project)}
+                      title="Edit Proyek"
+                    >
+                      <Edit className="w-4 h-4" />
+                    </Button>
+                    
+                    <Button
+                      size="sm"
+                      variant="outline"
                       onClick={() => handleToggleFeatured(project)}
+                      title={project.featured ? "Hapus dari Unggulan" : "Tandai sebagai Unggulan"}
                     >
                       {project.featured ? (
                         <StarOff className="w-4 h-4" />
@@ -540,6 +610,7 @@ export default function AdminProjects() {
                       size="sm"
                       variant="outline"
                       onClick={() => handleDeleteProject(project.id)}
+                      title="Hapus Proyek"
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>
@@ -582,6 +653,150 @@ export default function AdminProjects() {
             </CardContent>
           </Card>
         )}
+
+        {/* Edit Modal */}
+        <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
+          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Edit Proyek</DialogTitle>
+            </DialogHeader>
+            <form onSubmit={handleUpdateProject} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="edit-title">Judul *</Label>
+                  <Input
+                    id="edit-title"
+                    value={formData.title}
+                    onChange={(e) => setFormData({...formData, title: e.target.value})}
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="edit-slug">Slug *</Label>
+                  <Input
+                    id="edit-slug"
+                    value={formData.slug}
+                    onChange={(e) => setFormData({...formData, slug: e.target.value})}
+                    required
+                  />
+                </div>
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="edit-description">Deskripsi</Label>
+                <Textarea
+                  id="edit-description"
+                  value={formData.description}
+                  onChange={(e) => setFormData({...formData, description: e.target.value})}
+                  rows={3}
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="edit-techStack">Tech Stack (pisahkan dengan koma)</Label>
+                <Input
+                  id="edit-techStack"
+                  value={formData.techStack}
+                  onChange={(e) => setFormData({...formData, techStack: e.target.value})}
+                  placeholder="React.js, Node.js, MongoDB"
+                />
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="edit-liveUrl">Link Demo (URL Langsung)</Label>
+                  <Input
+                    id="edit-liveUrl"
+                    type="url"
+                    value={formData.liveUrl}
+                    onChange={(e) => setFormData({...formData, liveUrl: e.target.value})}
+                    placeholder="https://example.com"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="edit-repoUrl">URL Repositori</Label>
+                  <Input
+                    id="edit-repoUrl"
+                    type="url"
+                    value={formData.repoUrl}
+                    onChange={(e) => setFormData({...formData, repoUrl: e.target.value})}
+                    placeholder="https://github.com/username/repo"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label>Gambar Proyek</Label>
+                <div className="flex items-center gap-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => document.getElementById('edit-image-upload')?.click()}
+                    disabled={isUploading}
+                  >
+                    <Upload className="w-4 h-4 mr-2" />
+                    {isUploading ? 'Mengunggah...' : 'Unggah Gambar'}
+                  </Button>
+                  <Input
+                    id="edit-image-upload"
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleImageUpload}
+                    disabled={isUploading}
+                  />
+                </div>
+                
+                {formData.images.length > 0 && (
+                  <div className="flex flex-wrap gap-4 mt-4">
+                    {formData.images.map((img, idx) => (
+                      <div key={idx} className="relative w-24 h-24 group">
+                        <img 
+                          src={img} 
+                          alt={`Project ${idx + 1}`} 
+                          className="w-full h-full object-cover rounded-md border"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeImage(idx)}
+                          className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+              
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  id="edit-featured"
+                  checked={formData.featured}
+                  onChange={(e) => setFormData({...formData, featured: e.target.checked})}
+                  className="rounded"
+                />
+                <Label htmlFor="edit-featured">Proyek Unggulan</Label>
+              </div>
+              
+              <div className="flex gap-2 pt-4">
+                <Button type="submit">Perbarui Proyek</Button>
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={() => {
+                    setIsEditModalOpen(false)
+                    setEditingProject(null)
+                    resetForm()
+                  }}
+                >
+                  Batal
+                </Button>
+              </div>
+            </form>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   )
