@@ -107,7 +107,7 @@ export default function AdminLayout({
         {/* Sidebar Navigation */}
         <aside 
           className={cn(
-            "fixed inset-0 z-40 w-64 transform bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:h-[calc(100vh-8rem)] md:w-full md:bg-transparent md:border-none md:shadow-none shadow-2xl",
+            "fixed inset-0 z-40 w-64 transform bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-transform duration-300 ease-in-out shadow-2xl md:shadow-none md:translate-x-0 md:sticky md:top-6 md:h-[calc(100vh-8rem)] md:w-full md:bg-transparent md:border-none",
             isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
           )}
         >
