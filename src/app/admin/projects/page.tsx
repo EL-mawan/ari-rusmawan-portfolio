@@ -531,13 +531,29 @@ export default function AdminProjects() {
         {/* Projects Grid */}
         <div className="grid gap-4">
           {filteredProjects.map((project) => (
-            <Card key={project.id} className="hover:shadow-md transition-shadow">
+            <Card key={project.id} className="hover:shadow-md transition-shadow overflow-hidden">
+              {/* Featured Image Preview */}
+              {project.images && project.images.length > 0 && (
+                <div className="relative w-full h-48 bg-gray-100 dark:bg-gray-800 overflow-hidden">
+                  <img 
+                    src={project.images[0]} 
+                    alt={project.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                  <Badge variant="default" className="absolute top-3 right-3">
+                    <Star className="w-3 h-3 mr-1" />
+                    {project.featured ? 'Unggulan' : 'Proyek'}
+                  </Badge>
+                </div>
+              )}
+              
               <CardContent className="p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
                       <h3 className="text-lg font-semibold">{project.title}</h3>
-                      {project.featured && (
+                      {project.featured && !project.images?.length && (
                         <Badge variant="default" className="text-xs">
                           <Star className="w-3 h-3 mr-1" />
                           Unggulan
@@ -564,26 +580,22 @@ export default function AdminProjects() {
                       </div>
                     )}
 
-                    {project.images && project.images.length > 0 && (
+                    {project.images && project.images.length > 1 && (
                       <div className="mb-3">
-                        <div className="flex gap-3 overflow-x-auto pb-2">
-                          {project.images.map((img, idx) => (
+                        <p className="text-xs font-medium text-muted-foreground mb-2">Gambar Lainnya:</p>
+                        <div className="flex gap-2 overflow-x-auto pb-2">
+                          {project.images.slice(1).map((img, idx) => (
                             <div key={idx} className="relative group shrink-0">
                               <img 
                                 src={img} 
-                                alt={`${project.title} screenshot ${idx + 1}`} 
-                                className="h-24 w-32 rounded-lg border-2 border-gray-200 dark:border-gray-700 object-cover hover:border-primary transition-all duration-200 cursor-pointer hover:scale-105"
+                                alt={`${project.title} screenshot ${idx + 2}`} 
+                                className="h-16 w-20 rounded border-2 border-gray-200 dark:border-gray-700 object-cover hover:border-primary transition-all duration-200 cursor-pointer hover:scale-105"
                               />
-                              {idx === 0 && (
-                                <Badge variant="secondary" className="absolute top-1 left-1 text-xs">
-                                  Utama
-                                </Badge>
-                              )}
                             </div>
                           ))}
                         </div>
                         <p className="text-xs text-muted-foreground mt-1">
-                          {project.images.length} gambar
+                          Total {project.images.length} gambar
                         </p>
                       </div>
                     )}
