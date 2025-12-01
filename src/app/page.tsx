@@ -379,9 +379,7 @@ const Portfolio = () => {
           <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-8 animate-fade-in-up animation-delay-200 px-4">
             {profile?.title || 'Information Technology Education | Programmer | Adm. QA/QC | Project Expeditor'}
           </p>
-          <p className="text-base sm:text-lg text-muted-foreground mb-12 max-w-2xl mx-auto animate-fade-in-up animation-delay-300 px-4">
-            {profile?.bio || 'Passionate about educational technology, quality software development, and efficient project management. Bridging the gap between education and industry through innovative solutions.'}
-          </p>
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up animation-delay-400">
             <Button size="lg" className="text-lg px-8 py-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105" onClick={() => scrollToSection('contact')}>
               Hubungi Saya <Send className="ml-2 h-5 w-5" />
