@@ -14,7 +14,8 @@ import {
   Search,
   Filter,
   Upload,
-  X
+  X,
+  Code
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -529,137 +530,129 @@ export default function AdminProjects() {
         </Card>
 
         {/* Projects Grid */}
-        <div className="grid gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProjects.map((project) => (
-            <Card key={project.id} className="hover:shadow-md transition-shadow overflow-hidden">
-              {/* Featured Image Preview */}
-              {project.images && project.images.length > 0 && (
-                <div className="relative w-full h-48 bg-gray-100 dark:bg-gray-800 overflow-hidden">
+            <Card key={project.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+              {/* Project Image */}
+              {project.images && project.images.length > 0 ? (
+                <div className="aspect-video overflow-hidden relative group">
                   <img 
                     src={project.images[0]} 
                     alt={project.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                  <Badge variant="default" className="absolute top-3 right-3">
-                    <Star className="w-3 h-3 mr-1" />
-                    {project.featured ? 'Unggulan' : 'Proyek'}
-                  </Badge>
+                  {project.images.length > 1 && (
+                    <Badge variant="secondary" className="absolute bottom-2 right-2">
+                      +{project.images.length - 1} foto
+                    </Badge>
+                  )}
+                </div>
+              ) : (
+                <div className="aspect-video bg-linear-to-br from-primary/20 to-primary/5 flex items-center justify-center">
+                  <Code className="h-12 w-12 text-primary" />
                 </div>
               )}
               
-              <CardContent className="p-6">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-lg font-semibold">{project.title}</h3>
-                      {project.featured && !project.images?.length && (
-                        <Badge variant="default" className="text-xs">
-                          <Star className="w-3 h-3 mr-1" />
-                          Unggulan
-                        </Badge>
-                      )}
-                    </div>
-                    
-                    <p className="text-muted-foreground mb-3 line-clamp-2">
-                      {project.description}
-                    </p>
-                    
-                    {project.techStack && project.techStack.length > 0 && (
-                      <div className="flex flex-wrap gap-1 mb-3">
-                        {project.techStack.slice(0, 5).map((tech) => (
-                          <Badge key={tech} variant="secondary" className="text-xs">
-                            {tech}
-                          </Badge>
-                        ))}
-                        {project.techStack.length > 5 && (
-                          <Badge variant="secondary" className="text-xs">
-                            +{project.techStack.length - 5}
-                          </Badge>
-                        )}
-                      </div>
+              <CardHeader>
+                <div className="flex items-start justify-between gap-2">
+                  <CardTitle className="text-lg">{project.title}</CardTitle>
+                  {project.featured && (
+                    <Badge variant="default" className="text-xs shrink-0">
+                      <Star className="w-3 h-3 mr-1" />
+                      Unggulan
+                    </Badge>
+                  )}
+                </div>
+                <p className="text-sm text-muted-foreground line-clamp-2">
+                  {project.description}
+                </p>
+              </CardHeader>
+              
+              <CardContent className="space-y-4">
+                {/* Tech Stack */}
+                {project.techStack && project.techStack.length > 0 && (
+                  <div className="flex flex-wrap gap-1">
+                    {project.techStack.slice(0, 4).map((tech) => (
+                      <Badge key={tech} variant="secondary" className="text-xs">
+                        {tech}
+                      </Badge>
+                    ))}
+                    {project.techStack.length > 4 && (
+                      <Badge variant="secondary" className="text-xs">
+                        +{project.techStack.length - 4}
+                      </Badge>
                     )}
-
-                    {project.images && project.images.length > 1 && (
-                      <div className="mb-3">
-                        <p className="text-xs font-medium text-muted-foreground mb-2">Gambar Lainnya:</p>
-                        <div className="flex gap-2 overflow-x-auto pb-2">
-                          {project.images.slice(1).map((img, idx) => (
-                            <div key={idx} className="relative group shrink-0">
-                              <img 
-                                src={img} 
-                                alt={`${project.title} screenshot ${idx + 2}`} 
-                                className="h-16 w-20 rounded border-2 border-gray-200 dark:border-gray-700 object-cover hover:border-primary transition-all duration-200 cursor-pointer hover:scale-105"
-                              />
-                            </div>
-                          ))}
-                        </div>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          Total {project.images.length} gambar
-                        </p>
-                      </div>
-                    )}
-                    
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                      <span>Dibuat: {new Date(project.createdAt).toLocaleDateString()}</span>
-                      {project.profile && <span>Oleh: {project.profile.fullName}</span>}
-                    </div>
                   </div>
-                  
-                  <div className="flex flex-col gap-2 ml-4">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => openEditModal(project)}
-                      title="Edit Proyek"
-                    >
-                      <Edit className="w-4 h-4" />
-                    </Button>
-                    
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => handleToggleFeatured(project)}
-                      title={project.featured ? "Hapus dari Unggulan" : "Tandai sebagai Unggulan"}
-                    >
-                      {project.featured ? (
-                        <StarOff className="w-4 h-4" />
-                      ) : (
-                        <Star className="w-4 h-4" />
-                      )}
-                    </Button>
-                    
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => handleDeleteProject(project.id)}
-                      title="Hapus Proyek"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  </div>
+                )}
+                
+                {/* Meta Info */}
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <span>{new Date(project.createdAt).toLocaleDateString()}</span>
+                  {project.profile && (
+                    <>
+                      <span>•</span>
+                      <span>{project.profile.fullName}</span>
+                    </>
+                  )}
                 </div>
                 
-                {project.liveUrl || project.repoUrl ? (
-                  <div className="flex gap-2 mt-4 pt-4 border-t">
+                {/* Action Buttons */}
+                <div className="flex flex-wrap gap-2 pt-2 border-t">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => openEditModal(project)}
+                    className="flex-1"
+                  >
+                    <Edit className="w-3 h-3 mr-1" />
+                    Edit
+                  </Button>
+                  
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => handleToggleFeatured(project)}
+                    className="flex-1"
+                  >
+                    {project.featured ? (
+                      <><StarOff className="w-3 h-3 mr-1" />Batal</>
+                    ) : (
+                      <><Star className="w-3 h-3 mr-1" />Unggulan</>
+                    )}
+                  </Button>
+                  
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => handleDeleteProject(project.id)}
+                    className="text-destructive hover:bg-destructive hover:text-destructive-foreground"
+                  >
+                    <Trash2 className="w-3 h-3 mr-1" />
+                    Hapus
+                  </Button>
+                </div>
+                
+                {/* Links */}
+                {(project.liveUrl || project.repoUrl) && (
+                  <div className="flex gap-2">
                     {project.liveUrl && (
-                      <Button size="sm" variant="outline" asChild>
+                      <Button size="sm" variant="outline" className="flex-1" asChild>
                         <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                          <ExternalLink className="w-4 h-4 mr-2" />
-                          Demo Langsung
+                          <ExternalLink className="w-3 h-3 mr-1" />
+                          Demo
                         </a>
                       </Button>
                     )}
                     {project.repoUrl && (
-                      <Button size="sm" variant="outline" asChild>
+                      <Button size="sm" variant="outline" className="flex-1" asChild>
                         <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">
-                          <Github className="w-4 h-4 mr-2" />
-                          Kode
+                          <Github className="w-3 h-3 mr-1" />
+                          Code
                         </a>
                       </Button>
                     )}
                   </div>
-                ) : null}
+                )}
               </CardContent>
             </Card>
           ))}
