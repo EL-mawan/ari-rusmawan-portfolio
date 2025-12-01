@@ -36,7 +36,7 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    const { title, slug, description, techStack, liveUrl, repoUrl, featured } = await request.json();
+    const { title, slug, description, techStack, liveUrl, repoUrl, featured, images } = await request.json();
 
     // Validate required fields
     if (!title || !slug) {
@@ -75,6 +75,7 @@ export async function POST(request: NextRequest) {
         title,
         slug,
         description: description || '',
+        images: images && images.length > 0 ? JSON.stringify(images) : null,
         techStack: techStack ? JSON.stringify(techStack) : null,
         liveUrl,
         repoUrl,

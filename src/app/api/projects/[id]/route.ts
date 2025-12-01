@@ -15,6 +15,7 @@ export async function PUT(
         title: body.title,
         slug: body.slug,
         description: body.description,
+        images: body.images && body.images.length > 0 ? JSON.stringify(body.images) : null,
         techStack: body.techStack ? JSON.stringify(body.techStack) : null,
         liveUrl: body.liveUrl,
         repoUrl: body.repoUrl,
