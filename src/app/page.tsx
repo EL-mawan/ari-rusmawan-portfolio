@@ -617,9 +617,19 @@ const Portfolio = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project) => (
               <Card key={project.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
-                <div className="aspect-video bg-linear-to-br from-primary/20 to-primary/5 flex items-center justify-center">
-                  <Code className="h-12 w-12 text-primary" />
-                </div>
+                {project.images && project.images.length > 0 ? (
+                  <div className="aspect-video overflow-hidden">
+                    <img 
+                      src={project.images[0]} 
+                      alt={project.title}
+                      className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                    />
+                  </div>
+                ) : (
+                  <div className="aspect-video bg-linear-to-br from-primary/20 to-primary/5 flex items-center justify-center">
+                    <Code className="h-12 w-12 text-primary" />
+                  </div>
+                )}
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <CardTitle className="text-lg">{project.title}</CardTitle>
