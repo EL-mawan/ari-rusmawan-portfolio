@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Eye, EyeOff, Lock, Mail, Shield, Home } from 'lucide-react'
+import { Eye, EyeOff, Lock, Mail, Shield, Home, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -44,8 +44,6 @@ export default function AdminLogin() {
       const data = await response.json()
 
       if (response.ok && data.success) {
-        // Cookie is set by the server (HttpOnly)
-
         toast({
           title: "Login Berhasil",
           description: "Selamat datang di panel admin!",
@@ -71,99 +69,169 @@ export default function AdminLogin() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/20 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <Card className="shadow-xl">
-          <CardHeader className="text-center pb-6">
-            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Shield className="w-8 h-8 text-primary" />
+    <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4">
+      {/* Animated Gradient Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-700">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20"></div>
+        
+        {/* Floating Orbs */}
+        <div className="absolute top-20 left-20 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+        <div className="absolute top-40 right-20 w-72 h-72 bg-yellow-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-8 left-40 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+      </div>
+
+      {/* Login Card */}
+      <div className="w-full max-w-md relative z-10">
+        <Card className="backdrop-blur-xl bg-white/95 dark:bg-gray-900/95 shadow-2xl border-white/20 overflow-hidden">
+          {/* Gradient Top Border */}
+          <div className="h-1 bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600"></div>
+          
+          <CardHeader className="text-center pb-8 pt-8 space-y-4">
+            {/* Icon with Gradient Background */}
+            <div className="relative mx-auto w-20 h-20 mb-2">
+              <div className="absolute inset-0 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-2xl rotate-6 animate-pulse"></div>
+              <div className="relative w-full h-full bg-gradient-to-br from-violet-500 to-indigo-500 rounded-2xl flex items-center justify-center shadow-lg">
+                <Shield className="w-10 h-10 text-white" />
+              </div>
             </div>
-            <CardTitle className="text-2xl">Login Admin</CardTitle>
-            <p className="text-muted-foreground">
-              Masukkan kredensial Anda untuk mengakses panel admin
-            </p>
+            
+            <div className="space-y-2">
+              <CardTitle className="text-3xl font-bold bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent">
+                Admin Portal
+              </CardTitle>
+              <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                <Sparkles className="w-4 h-4 text-violet-500" />
+                <p>Selamat datang kembali!</p>
+              </div>
+            </div>
           </CardHeader>
 
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
+          <CardContent className="pb-8">
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Email Field */}
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Label htmlFor="email" className="text-sm font-medium">
+                  Email Address
+                </Label>
+                <div className="relative group">
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground transition-colors group-focus-within:text-violet-600" />
                   <Input
                     id="email"
                     name="email"
                     type="email"
-                    placeholder="admin@contoh.com"
+                    placeholder="admin@example.com"
                     value={formData.email}
                     onChange={handleInputChange}
-                    className="pl-10"
+                    className="pl-11 h-12 border-gray-200 focus:border-violet-500 focus:ring-violet-500 transition-all duration-200"
                     required
                   />
                 </div>
               </div>
 
+              {/* Password Field */}
               <div className="space-y-2">
-                <Label htmlFor="password">Kata Sandi</Label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Label htmlFor="password" className="text-sm font-medium">
+                  Password
+                </Label>
+                <div className="relative group">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground transition-colors group-focus-within:text-violet-600" />
                   <Input
                     id="password"
                     name="password"
                     type={showPassword ? 'text' : 'password'}
-                    placeholder="Masukkan kata sandi Anda"
+                    placeholder="••••••••"
                     value={formData.password}
                     onChange={handleInputChange}
-                    className="pl-10 pr-10"
+                    className="pl-11 pr-11 h-12 border-gray-200 focus:border-violet-500 focus:ring-violet-500 transition-all duration-200"
                     required
                   />
                   <Button
                     type="button"
                     variant="ghost"
                     size="icon"
-                    className="absolute right-0 top-0 h-full px-3"
+                    className="absolute right-1 top-1/2 -translate-y-1/2 h-10 w-10 hover:bg-violet-50 transition-colors"
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? (
-                      <EyeOff className="h-4 w-4" />
+                      <EyeOff className="h-4 w-4 text-muted-foreground" />
                     ) : (
-                      <Eye className="h-4 w-4" />
+                      <Eye className="h-4 w-4 text-muted-foreground" />
                     )}
                   </Button>
                 </div>
               </div>
 
+              {/* Submit Button */}
               <Button 
                 type="submit" 
-                className="w-full"
+                className="w-full h-12 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-medium shadow-lg shadow-violet-500/30 transition-all duration-200 hover:shadow-xl hover:shadow-violet-500/40 hover:scale-[1.02] mt-6"
                 disabled={isLoading}
               >
                 {isLoading ? (
                   <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                    Masuk...
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                    Memproses...
                   </>
                 ) : (
-                  'Masuk'
+                  <>
+                    <Shield className="w-4 h-4 mr-2" />
+                    Masuk ke Dashboard
+                  </>
                 )}
               </Button>
-              </form>
+            </form>
 
-              <div className="mt-4">
-                <Button 
-                  type="button"
-                  variant="outline"
-                  className="w-full"
-                  onClick={() => router.push('/')}
-                >
-                  <Home className="w-4 h-4 mr-2" />
-                  Kembali ke Halaman Utama
-                </Button>
+            {/* Divider */}
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-200"></div>
               </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-white dark:bg-gray-900 px-2 text-muted-foreground">atau</span>
+              </div>
+            </div>
 
+            {/* Back to Home Button */}
+            <Button 
+              type="button"
+              variant="outline"
+              className="w-full h-12 border-2 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-200 hover:border-violet-300 hover:scale-[1.02] group"
+              onClick={() => router.push('/')}
+            >
+              <Home className="w-4 h-4 mr-2 transition-transform group-hover:-translate-x-1" />
+              Kembali ke Beranda
+            </Button>
           </CardContent>
         </Card>
+
+        {/* Bottom Text */}
+        <p className="text-center mt-6 text-sm text-white/80">
+          © 2024 Ari Rusmawan Portfolio. All rights reserved.
+        </p>
       </div>
+
+      <style jsx>{`
+        @keyframes blob {
+          0%, 100% {
+            transform: translate(0, 0) scale(1);
+          }
+          33% {
+            transform: translate(30px, -50px) scale(1.1);
+          }
+          66% {
+            transform: translate(-20px, 20px) scale(0.9);
+          }
+        }
+        .animate-blob {
+          animation: blob 7s infinite;
+        }
+        .animation-delay-2000 {
+          animation-delay: 2s;
+        }
+        .animation-delay-4000 {
+          animation-delay: 4s;
+        }
+      `}</style>
     </div>
   )
 }
