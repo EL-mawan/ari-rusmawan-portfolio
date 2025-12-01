@@ -120,7 +120,7 @@ export default function AdminLayout({
           </div>
 
           <div className="h-full overflow-y-auto py-4 md:py-0 px-3 md:px-0">
-            <nav className="space-y-1">
+            <nav className="space-y-1.5">
               {navigation.map((item) => {
                 const isActive = pathname === item.href;
                 return (
@@ -128,7 +128,7 @@ export default function AdminLayout({
                     key={item.name}
                     href={item.href}
                     className={cn(
-                      "group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200",
+                      "group flex items-center px-4 py-3.5 text-base font-medium rounded-xl transition-all duration-200",
                       isActive 
                         ? "bg-white text-violet-700 shadow-sm ring-1 ring-gray-200 dark:bg-gray-800 dark:text-violet-400 dark:ring-gray-700" 
                         : "text-gray-600 hover:bg-white hover:text-violet-600 hover:shadow-sm hover:ring-1 hover:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-violet-400 dark:hover:ring-gray-700"
@@ -137,7 +137,7 @@ export default function AdminLayout({
                   >
                     <item.icon 
                       className={cn(
-                        "mr-3 h-5 w-5 transition-colors",
+                        "mr-3 h-6 w-6 transition-colors",
                         isActive 
                           ? "text-violet-600 dark:text-violet-400" 
                           : "text-gray-400 group-hover:text-violet-500 dark:text-gray-500 dark:group-hover:text-violet-400"
@@ -145,7 +145,7 @@ export default function AdminLayout({
                     />
                     {item.name}
                     {isActive && (
-                      <div className="ml-auto w-1.5 h-1.5 rounded-full bg-violet-600 dark:bg-violet-400"></div>
+                      <div className="ml-auto w-2 h-2 rounded-full bg-violet-600 dark:bg-violet-400"></div>
                     )}
                   </Link>
                 );
