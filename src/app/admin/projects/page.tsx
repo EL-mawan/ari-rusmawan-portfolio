@@ -368,7 +368,7 @@ export default function AdminProjects() {
               </DialogHeader>
               <form onSubmit={handleCreateProject} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <Label htmlFor="title">Judul *</Label>
                     <Input
                       id="title"
@@ -377,7 +377,7 @@ export default function AdminProjects() {
                       required
                     />
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <Label htmlFor="slug">Slug *</Label>
                     <Input
                       id="slug"
@@ -388,7 +388,7 @@ export default function AdminProjects() {
                   </div>
                 </div>
                 
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <Label htmlFor="description">Deskripsi</Label>
                   <Textarea
                     id="description"
@@ -398,7 +398,7 @@ export default function AdminProjects() {
                   />
                 </div>
                 
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <Label htmlFor="techStack">Tech Stack (pisahkan dengan koma)</Label>
                   <Input
                     id="techStack"
@@ -409,7 +409,7 @@ export default function AdminProjects() {
                 </div>
                 
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <Label htmlFor="liveUrl">Link Demo (URL Langsung)</Label>
                     <Input
                       id="liveUrl"
@@ -419,7 +419,7 @@ export default function AdminProjects() {
                       placeholder="https://example.com"
                     />
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <Label htmlFor="repoUrl">URL Repositori</Label>
                     <Input
                       id="repoUrl"
@@ -431,7 +431,7 @@ export default function AdminProjects() {
                   </div>
                 </div>
 
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <Label>Gambar Proyek</Label>
                   <div className="flex items-center gap-4">
                     <Button
@@ -682,7 +682,7 @@ export default function AdminProjects() {
             </DialogHeader>
             <form onSubmit={handleUpdateProject} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <Label htmlFor="edit-title">Judul *</Label>
                   <Input
                     id="edit-title"
@@ -691,7 +691,7 @@ export default function AdminProjects() {
                     required
                   />
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <Label htmlFor="edit-slug">Slug *</Label>
                   <Input
                     id="edit-slug"
@@ -702,7 +702,7 @@ export default function AdminProjects() {
                 </div>
               </div>
               
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <Label htmlFor="edit-description">Deskripsi</Label>
                 <Textarea
                   id="edit-description"
@@ -712,7 +712,7 @@ export default function AdminProjects() {
                 />
               </div>
               
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <Label htmlFor="edit-techStack">Tech Stack (pisahkan dengan koma)</Label>
                 <Input
                   id="edit-techStack"
@@ -723,7 +723,7 @@ export default function AdminProjects() {
               </div>
               
               <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <Label htmlFor="edit-liveUrl">Link Demo (URL Langsung)</Label>
                   <Input
                     id="edit-liveUrl"
@@ -733,7 +733,7 @@ export default function AdminProjects() {
                     placeholder="https://example.com"
                   />
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <Label htmlFor="edit-repoUrl">URL Repositori</Label>
                   <Input
                     id="edit-repoUrl"
@@ -745,7 +745,7 @@ export default function AdminProjects() {
                 </div>
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <Label>Gambar Proyek</Label>
                 <div className="flex items-center gap-4">
                   <Button

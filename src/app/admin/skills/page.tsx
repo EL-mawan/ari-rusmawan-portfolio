@@ -247,7 +247,7 @@ export default function AdminSkills() {
                 <DialogTitle>Buat Keahlian Baru</DialogTitle>
               </DialogHeader>
               <form onSubmit={handleCreateSkill} className="space-y-4">
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <Label htmlFor="name">Nama Keahlian *</Label>
                   <Input
                     id="name"
@@ -257,7 +257,7 @@ export default function AdminSkills() {
                   />
                 </div>
                 
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <Label htmlFor="category">Kategori *</Label>
                   <Input
                     id="category"
@@ -268,7 +268,7 @@ export default function AdminSkills() {
                   />
                 </div>
                 
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <Label htmlFor="levelPercent">Kemahiran ({formData.levelPercent}%)</Label>
                   <Input
                     id="levelPercent"
@@ -280,7 +280,7 @@ export default function AdminSkills() {
                   />
                 </div>
                 
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <Label htmlFor="icon">Ikon (Nama ikon Lucide)</Label>
                   <Input
                     id="icon"
@@ -430,7 +430,7 @@ export default function AdminSkills() {
               <DialogTitle>Edit Keahlian</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleUpdateSkill} className="space-y-4">
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <Label htmlFor="edit-name">Nama Keahlian *</Label>
                 <Input
                   id="edit-name"
@@ -440,7 +440,7 @@ export default function AdminSkills() {
                 />
               </div>
               
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <Label htmlFor="edit-category">Kategori *</Label>
                 <Input
                   id="edit-category"
@@ -450,7 +450,7 @@ export default function AdminSkills() {
                 />
               </div>
               
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <Label htmlFor="edit-levelPercent">Kemahiran ({formData.levelPercent}%)</Label>
                 <Input
                   id="edit-levelPercent"
@@ -462,7 +462,7 @@ export default function AdminSkills() {
                 />
               </div>
               
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <Label htmlFor="edit-icon">Ikon (Nama ikon Lucide)</Label>
                 <Input
                   id="edit-icon"

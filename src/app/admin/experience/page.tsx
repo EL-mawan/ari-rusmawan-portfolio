@@ -261,7 +261,7 @@ export default function AdminExperience() {
               </DialogHeader>
               <form onSubmit={handleCreateExperience} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <Label htmlFor="company">Perusahaan *</Label>
                     <Input
                       id="company"
@@ -270,7 +270,7 @@ export default function AdminExperience() {
                       required
                     />
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <Label htmlFor="position">Posisi *</Label>
                     <Input
                       id="position"
@@ -281,7 +281,7 @@ export default function AdminExperience() {
                   </div>
                 </div>
                 
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <Label htmlFor="location">Lokasi</Label>
                   <Input
                     id="location"
@@ -292,7 +292,7 @@ export default function AdminExperience() {
                 </div>
                 
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <Label htmlFor="startDate">Tanggal Mulai *</Label>
                     <Input
                       id="startDate"
@@ -302,7 +302,7 @@ export default function AdminExperience() {
                       required
                     />
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <Label htmlFor="endDate">Tanggal Selesai (kosongkan jika saat ini)</Label>
                     <Input
                       id="endDate"
@@ -313,7 +313,7 @@ export default function AdminExperience() {
                   </div>
                 </div>
                 
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <Label htmlFor="responsibilities">Tanggung Jawab (satu per baris)</Label>
                   <Textarea
                     id="responsibilities"
@@ -450,7 +450,7 @@ export default function AdminExperience() {
             </DialogHeader>
             <form onSubmit={handleUpdateExperience} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <Label htmlFor="edit-company">Perusahaan *</Label>
                   <Input
                     id="edit-company"
@@ -459,7 +459,7 @@ export default function AdminExperience() {
                     required
                   />
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <Label htmlFor="edit-position">Posisi *</Label>
                   <Input
                     id="edit-position"
@@ -470,7 +470,7 @@ export default function AdminExperience() {
                 </div>
               </div>
               
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <Label htmlFor="edit-location">Lokasi</Label>
                 <Input
                   id="edit-location"
@@ -480,7 +480,7 @@ export default function AdminExperience() {
               </div>
               
               <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <Label htmlFor="edit-startDate">Tanggal Mulai *</Label>
                   <Input
                     id="edit-startDate"
@@ -490,7 +490,7 @@ export default function AdminExperience() {
                     required
                   />
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <Label htmlFor="edit-endDate">Tanggal Selesai</Label>
                   <Input
                     id="edit-endDate"
@@ -501,7 +501,7 @@ export default function AdminExperience() {
                 </div>
               </div>
               
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <Label htmlFor="edit-responsibilities">Tanggung Jawab (satu per baris)</Label>
                 <Textarea
                   id="edit-responsibilities"
