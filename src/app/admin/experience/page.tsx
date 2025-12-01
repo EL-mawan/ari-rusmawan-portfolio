@@ -355,66 +355,74 @@ export default function AdminExperience() {
         </Card>
 
         {/* Experience List */}
-        <div className="grid gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {filteredExperiences.map((exp) => (
-            <Card key={exp.id} className="hover:shadow-md transition-shadow">
-              <CardContent className="p-6">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="p-2 bg-primary/10 rounded-full">
-                        <Briefcase className="h-5 w-5 text-primary" />
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-semibold">{exp.position}</h3>
-                        <p className="text-primary font-medium">{exp.company}</p>
-                      </div>
+            <Card key={exp.id} className="hover:shadow-lg transition-all duration-300 group flex flex-col">
+              <CardContent className="p-6 flex flex-col h-full">
+                <div className="flex items-start gap-4 mb-6">
+                  <div className="p-3 bg-primary/10 rounded-xl group-hover:bg-primary/20 transition-colors shrink-0">
+                    <Briefcase className="h-6 w-6 text-primary" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-xl font-bold truncate">{exp.position}</h3>
+                    <p className="text-primary font-medium truncate">{exp.company}</p>
+                  </div>
+                </div>
+                
+                <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-6 pb-6 border-b border-border/50">
+                  <div className="flex items-center gap-2 bg-secondary/50 px-3 py-1 rounded-full">
+                    <Calendar className="h-4 w-4 text-primary" />
+                    <span className="font-medium">
+                      {new Date(exp.startDate).toLocaleDateString('id-ID', { month: 'short', year: 'numeric' })} - {exp.endDate ? new Date(exp.endDate).toLocaleDateString('id-ID', { month: 'short', year: 'numeric' }) : 'Saat Ini'}
+                    </span>
+                  </div>
+                  {exp.location && (
+                    <div className="flex items-center gap-2 bg-secondary/50 px-3 py-1 rounded-full">
+                      <MapPin className="h-4 w-4 text-primary" />
+                      <span className="font-medium">{exp.location}</span>
                     </div>
-                    
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
-                      <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4" />
-                        <span>
-                          {new Date(exp.startDate).toLocaleDateString()} - {exp.endDate ? new Date(exp.endDate).toLocaleDateString() : 'Saat Ini'}
-                        </span>
-                      </div>
-                      {exp.location && (
-                        <div className="flex items-center gap-2">
-                          <MapPin className="h-4 w-4" />
-                          <span>{exp.location}</span>
-                        </div>
+                  )}
+                </div>
+                
+                <div className="flex-1 mb-6">
+                  {exp.responsibilities && exp.responsibilities.length > 0 ? (
+                    <ul className="space-y-3">
+                      {exp.responsibilities.slice(0, 4).map((resp, idx) => (
+                        <li key={idx} className="flex items-start gap-3 text-sm text-muted-foreground">
+                          <CheckCircle className="h-4 w-4 text-primary mt-0.5 shrink-0" />
+                          <span className="line-clamp-2">{resp}</span>
+                        </li>
+                      ))}
+                      {exp.responsibilities.length > 4 && (
+                        <li className="text-xs text-primary font-medium pl-7 pt-1">
+                          +{exp.responsibilities.length - 4} tanggung jawab lainnya...
+                        </li>
                       )}
-                    </div>
-                    
-                    {exp.responsibilities && exp.responsibilities.length > 0 && (
-                      <ul className="space-y-2">
-                        {exp.responsibilities.map((resp, idx) => (
-                          <li key={idx} className="flex items-start gap-2 text-sm">
-                            <CheckCircle className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
-                            <span>{resp}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                  
-                  <div className="flex gap-2 ml-4">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => openEditModal(exp)}
-                    >
-                      <Edit className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="text-destructive hover:text-destructive"
-                      onClick={() => handleDeleteExperience(exp.id)}
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  </div>
+                    </ul>
+                  ) : (
+                    <p className="text-sm text-muted-foreground italic">Tidak ada deskripsi tanggung jawab.</p>
+                  )}
+                </div>
+                
+                <div className="grid grid-cols-2 gap-3 pt-2 mt-auto">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => openEditModal(exp)}
+                    className="w-full hover:bg-primary/5 hover:text-primary hover:border-primary/30 transition-all"
+                  >
+                    <Edit className="w-3 h-3 mr-2" />
+                    Edit
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="w-full text-destructive hover:bg-destructive hover:text-white transition-all"
+                    onClick={() => handleDeleteExperience(exp.id)}
+                  >
+                    <Trash2 className="w-3 h-3 mr-2" />
+                    Hapus
+                  </Button>
                 </div>
               </CardContent>
             </Card>

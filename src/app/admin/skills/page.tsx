@@ -337,42 +337,58 @@ export default function AdminSkills() {
         </Card>
 
         {/* Skills Grid */}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredSkills.map((skill) => (
-            <Card key={skill.id} className="hover:shadow-md transition-shadow">
-              <CardContent className="p-6">
-                <div className="flex items-start justify-between mb-4">
+            <Card key={skill.id} className="hover:shadow-lg transition-all duration-300 group">
+              <CardContent className="p-6 flex flex-col h-full">
+                <div className="flex items-start justify-between mb-6">
                   <div>
-                    <h3 className="text-lg font-semibold">{skill.name}</h3>
-                    <Badge variant="secondary" className="mt-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="p-2 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
+                        <span className="text-lg font-bold text-primary">
+                          {skill.name.charAt(0)}
+                        </span>
+                      </div>
+                      <h3 className="text-lg font-bold">{skill.name}</h3>
+                    </div>
+                    <Badge variant="secondary" className="text-xs">
                       {skill.category}
                     </Badge>
                   </div>
-                  <div className="flex gap-2">
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      onClick={() => openEditModal(skill)}
-                    >
-                      <Edit className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      className="text-destructive hover:text-destructive"
-                      onClick={() => handleDeleteSkill(skill.id)}
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
+                  <div className="text-2xl font-bold text-primary/20 group-hover:text-primary/40 transition-colors">
+                    {skill.levelPercent}%
                   </div>
                 </div>
                 
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>Kemahiran</span>
-                    <span>{skill.levelPercent}%</span>
+                <div className="space-y-2 mb-6 flex-1">
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span>Pemula</span>
+                    <span>Ahli</span>
                   </div>
-                  <Progress value={skill.levelPercent} className="h-2" />
+                  <Progress value={skill.levelPercent} className="h-2.5 bg-secondary" />
+                </div>
+
+                {/* Action Buttons */}
+                <div className="grid grid-cols-2 gap-3 pt-4 border-t mt-auto">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => openEditModal(skill)}
+                    className="w-full hover:bg-primary/5 hover:text-primary hover:border-primary/30 transition-all"
+                  >
+                    <Edit className="w-3 h-3 mr-2" />
+                    Edit
+                  </Button>
+                  
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => handleDeleteSkill(skill.id)}
+                    className="w-full text-destructive hover:bg-destructive hover:text-white transition-all"
+                  >
+                    <Trash2 className="w-3 h-3 mr-2" />
+                    Hapus
+                  </Button>
                 </div>
               </CardContent>
             </Card>
@@ -380,13 +396,29 @@ export default function AdminSkills() {
         </div>
 
         {filteredSkills.length === 0 && (
-          <Card>
-            <CardContent className="text-center py-12">
-              <p className="text-muted-foreground">
+          <Card className="border-dashed">
+            <CardContent className="text-center py-16">
+              <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+                <Search className="w-8 h-8 text-muted-foreground" />
+              </div>
+              <h3 className="text-lg font-semibold mb-2">Tidak ada keahlian ditemukan</h3>
+              <p className="text-muted-foreground max-w-sm mx-auto">
                 {searchTerm || selectedCategory !== 'all'
-                  ? 'Tidak ada keahlian yang cocok dengan kriteria Anda' 
-                  : 'Belum ada keahlian. Tambahkan keahlian pertama Anda!'}
+                  ? 'Coba ubah kata kunci pencarian atau filter kategori Anda.' 
+                  : 'Mulai tambahkan keahlian teknis Anda untuk ditampilkan di portofolio.'}
               </p>
+              {(searchTerm || selectedCategory !== 'all') && (
+                <Button 
+                  variant="link" 
+                  onClick={() => {
+                    setSearchTerm('')
+                    setSelectedCategory('all')
+                  }}
+                  className="mt-4"
+                >
+                  Hapus Filter
+                </Button>
+              )}
             </CardContent>
           </Card>
         )}
