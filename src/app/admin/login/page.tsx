@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Eye, EyeOff, Lock, Mail, Shield } from 'lucide-react'
+import { Eye, EyeOff, Lock, Mail, Shield, Home } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -147,8 +147,19 @@ export default function AdminLogin() {
                   'Masuk'
                 )}
               </Button>
-            </form>
+              </form>
 
+              <div className="mt-4">
+                <Button 
+                  type="button"
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => router.push('/')}
+                >
+                  <Home className="w-4 h-4 mr-2" />
+                  Kembali ke Halaman Utama
+                </Button>
+              </div>
 
           </CardContent>
         </Card>
