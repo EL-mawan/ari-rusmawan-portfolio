@@ -651,7 +651,7 @@ export default function AdminProjects() {
                     size="sm"
                     variant="outline"
                     onClick={() => handleDeleteProject(project.id)}
-                    className="w-full text-destructive hover:bg-destructive hover:text-destructive-foreground"
+                    className="w-full text-destructive hover:bg-destructive hover:text-white"
                   >
                     <Trash2 className="w-3 h-3 mr-1" />
                     Hapus Proyek
