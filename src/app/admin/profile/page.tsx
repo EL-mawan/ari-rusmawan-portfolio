@@ -206,7 +206,7 @@ export default function AdminProfile() {
     <div className="min-h-screen bg-background">
       <div className="max-w-4xl mx-auto p-6">
         <div className="flex items-center justify-between mb-6 animate-fade-in">
-          <h1 className="text-3xl font-bold">Profil Saya</h1>
+          <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-violet-600 to-indigo-600 dark:from-violet-400 dark:to-indigo-400">Profil Saya</h1>
         </div>
 
         <form onSubmit={handleSaveProfile} className="space-y-6">

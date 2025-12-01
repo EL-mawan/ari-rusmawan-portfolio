@@ -241,7 +241,7 @@ export default function AdminMessages() {
       <div className="max-w-7xl mx-auto p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-3xl font-bold">Pesan</h1>
+            <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-violet-600 to-indigo-600 dark:from-violet-400 dark:to-indigo-400">Pesan</h1>
             <p className="text-muted-foreground">
               {unreadCount} pesan belum dibaca
             </p>
