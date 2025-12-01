@@ -93,15 +93,15 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto p-6">
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold">Dasbor</h1>
-            <p className="text-muted-foreground mt-1">Selamat datang kembali! Berikut adalah ringkasan portofolio Anda.</p>
+            <h1 className="text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-gray-100 dark:to-gray-400">
+              Dasbor
+            </h1>
+            <p className="text-muted-foreground mt-2 text-lg">
+              Selamat datang kembali! Berikut adalah ringkasan portofolio Anda.
+            </p>
           </div>
-          <Link href="/">
-            <Eye className="w-5 h-5 mr-2 inline" />
-            Lihat Situs
-          </Link>
         </div>
 
         {/* Stats Grid */}
