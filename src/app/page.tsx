@@ -259,7 +259,13 @@ const Portfolio = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground relative selection:bg-primary/30 overflow-x-hidden">
+      {/* Global Background Glows */}
+      <div className="fixed inset-0 -z-30 pointer-events-none overflow-hidden">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px] animate-pulse-slow"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px] animate-pulse-slow animation-delay-500"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[60%] bg-purple-500/5 rounded-full blur-[150px] animate-pulse-slow animation-delay-1000"></div>
+      </div>
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-background/95 backdrop-blur-lg border-b shadow-sm z-50 transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -342,39 +348,30 @@ const Portfolio = () => {
       <section id="home" className="min-h-screen flex items-center justify-center px-4 pt-16 relative overflow-hidden">
         {/* Dynamic Background */}
         <div className="absolute inset-0 -z-10">
-          {settings?.hero_background_url ? (
-            <>
-              <img 
-                src={settings.hero_background_url} 
-                alt="Hero Background" 
-                className="w-full h-full object-cover"
-              />
-              {/* Dark Overlay for readability */}
-              <div className="absolute inset-0 bg-black/60"></div>
-            </>
-          ) : (
-            <>
-              {/* Default Animated Background */}
-              <div className="absolute inset-0 bg-linear-to-br from-primary/5 via-background to-primary/10 animate-gradient-shift"></div>
-              
-              {/* Floating Particles */}
-              <div className="absolute inset-0">
-                <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-float"></div>
-                <div className="absolute top-40 right-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-float-delayed"></div>
-                <div className="absolute bottom-20 left-1/4 w-80 h-80 bg-primary/8 rounded-full blur-3xl animate-float-slow"></div>
-                <div className="absolute bottom-40 right-1/3 w-64 h-64 bg-primary/6 rounded-full blur-3xl animate-float-delayed-slow"></div>
-              </div>
-              
-              {/* Grid Pattern Overlay */}
-              <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-            </>
-          )}
+          <div className="absolute inset-0 bg-black/40 z-10"></div>
+          <img 
+            src={settings?.hero_background_url || "/hero-bg.png"} 
+            alt="Hero Background" 
+            className="w-full h-full object-cover scale-105 animate-pulse-slow"
+          />
+          
+          {/* Subtle Overlays */}
+          <div className="absolute inset-0 bg-linear-to-b from-transparent via-background/20 to-background z-20"></div>
+          
+          {/* Floating Glows */}
+          <div className="absolute inset-0 z-10 opacity-40">
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-float"></div>
+            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-float-delayed"></div>
+          </div>
+          
+          {/* Grid Pattern Overlay */}
+          <div className="absolute inset-0 bg-grid-pattern opacity-10 z-10"></div>
         </div>
 
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in-up px-4">
-            Halo, Saya <span className="text-primary bg-clip-text text-transparent bg-linear-to-r from-primary to-primary/60 animate-gradient-text">{profile?.fullName || 'Ari Rusmawan'}</span>
+            Halo, Saya <span className="bg-clip-text text-transparent bg-linear-to-r from-primary to-primary/60 animate-gradient-text">{profile?.fullName || 'Ari Rusmawan'}</span>
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-8 animate-fade-in-up animation-delay-200 px-4">
             {profile?.title || 'Information Technology Education | Programmer | Adm. QA/QC | Project Expeditor'}
@@ -594,7 +591,7 @@ const Portfolio = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {filteredSkills.map((skill, index) => (
-              <Card key={index} className="p-6">
+              <Card key={index} className="p-6 glass-effect card-hover-glow">
                 <div className="flex justify-between items-center mb-2">
                   <span className="font-medium">{skill.name}</span>
                   <span className="text-sm text-muted-foreground">{skill.levelPercent}%</span>
@@ -616,7 +613,7 @@ const Portfolio = () => {
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project) => (
-              <Card key={project.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
+              <Card key={project.id} className="overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer glass-effect card-hover-glow border-none">
                 {project.images && project.images.length > 0 ? (
                   <div className="aspect-video overflow-hidden">
                     <img 
@@ -726,7 +723,7 @@ const Portfolio = () => {
               </div>
             </div>
             
-            <Card>
+            <Card className="glass-effect card-hover-glow border-none">
               <CardHeader>
                 <CardTitle>Kirim Pesan</CardTitle>
                 <CardDescription>
