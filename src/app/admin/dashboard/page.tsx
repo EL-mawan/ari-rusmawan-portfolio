@@ -17,7 +17,8 @@ import {
   Settings,
   User,
   LogOut,
-  Shield
+  Shield,
+  GraduationCap
 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -253,8 +254,12 @@ export default function AdminDashboard() {
           <div className="grid grid-cols-4 gap-4">
             {[
               { label: 'Add Project', icon: Plus, color: 'bg-indigo-50 text-indigo-600', href: '/admin/projects' },
-              { label: 'Edit Bio', icon: User, color: 'bg-blue-50 text-blue-600', href: '/admin/profile' },
-              { label: 'Update Skill', icon: Code, color: 'bg-emerald-50 text-emerald-600', href: '/admin/skills' },
+              { label: 'Update Info', icon: User, color: 'bg-blue-50 text-blue-600', href: '/admin/profile' },
+              { label: 'Add Skill', icon: Code, color: 'bg-emerald-50 text-emerald-600', href: '/admin/skills' },
+              { label: 'Education', icon: GraduationCap, color: 'bg-orange-50 text-orange-600', href: '/admin/education' },
+              { label: 'Experience', icon: Briefcase, color: 'bg-pink-50 text-pink-600', href: '/admin/experience' },
+              { label: 'Messages', icon: MessageSquare, color: 'bg-cyan-50 text-cyan-600', href: '/admin/messages' },
+              { label: 'Settings', icon: Settings, color: 'bg-slate-50 text-slate-600', href: '/admin/settings' },
               { label: 'Public Site', icon: ExternalLink, color: 'bg-purple-50 text-purple-600', href: '/' },
             ].map((action, i) => (
               <Link key={i} href={action.href} className="flex flex-col items-center gap-3">
