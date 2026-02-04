@@ -10,7 +10,6 @@ import {
   Settings,
   LogOut,
   Briefcase,
-  Bell,
   Search,
   User
 } from 'lucide-react';
@@ -18,6 +17,12 @@ import { Button } from '@/components/ui/button';
 import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 
 const navigation = [
   { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
@@ -35,6 +40,8 @@ export default function AdminLayout({
   const pathname = usePathname();
   const router = useRouter();
   const [profile, setProfile] = useState<any>(null);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const [backCount, setBackCount] = useState(0);
 
   // Don't show layout on login page
   if (pathname === '/admin/login') {
@@ -54,6 +61,37 @@ export default function AdminLayout({
     fetchProfile();
   }, []);
 
+  // Global event listener for logout
+  useEffect(() => {
+    const handleOpenLogout = () => setShowLogoutConfirm(true);
+    window.addEventListener('open-logout-confirm', handleOpenLogout);
+    return () => window.removeEventListener('open-logout-confirm', handleOpenLogout);
+  }, []);
+
+  // Back navigation logout logic
+  useEffect(() => {
+    // Push a dummy state to history
+    window.history.pushState(null, '', window.location.href);
+
+    const handlePopState = () => {
+      setBackCount(prev => {
+        const next = prev + 1;
+        if (next === 1) {
+          setShowLogoutConfirm(true);
+          // Push state back so user stays on page to see the modal
+          window.history.pushState(null, '', window.location.href);
+        } else if (next >= 2) {
+          // Second back click -> Force Logout
+          handleLogout();
+        }
+        return next;
+      });
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
   const handleLogout = async () => {
     try {
       await fetch('/api/admin/auth', { method: 'DELETE' });
@@ -65,20 +103,17 @@ export default function AdminLayout({
 
   return (
     <div className="min-h-screen bg-[#F8FAFC]">
-      {/* 
-          Premium Top Navigation 
-          On Mobile: Simplified header with only Logo and Notification
-          On Desktop: Full navigation
-      */}
-      <nav className="sticky top-0 z-50 w-full bg-white border-b border-slate-100 shadow-sm px-4 md:px-8 h-20 flex items-center justify-between">
+      {/* Premium Top Navigation - Desktop Only */}
+      <nav className="hidden lg:flex sticky top-0 z-50 w-full bg-white border-b border-slate-100 shadow-sm px-4 md:px-8 h-20 items-center justify-between">
         {/* Left: Logo */}
         <div className="flex items-center gap-2">
           <Link href="/admin/dashboard" className="flex items-center gap-2 group">
-            <div className="relative w-12 h-12 flex items-center justify-center transition-transform duration-300 group-hover:scale-110 rounded-full border border-slate-100 overflow-hidden bg-white shadow-sm">
+            <div className="relative w-12 h-12 flex items-center justify-center transition-transform duration-500 group-hover:scale-110 rounded-full border-2 border-indigo-100 overflow-hidden bg-white shadow-[0_5px_15px_-3px_rgba(0,0,0,0.1)] p-1">
+              <div className="absolute inset-0 rounded-full border border-indigo-600/5 shadow-inner"></div>
               <img 
-                src="/Gemini_Generated_Image_31214k31214k3121.png" 
+                src="/uploads/profile/1764442818168-WhatsApp Image 2022-06-01 at 17.06.23.PNG" 
                 alt="Logo" 
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover rounded-full transition-transform duration-700 group-hover:rotate-12"
               />
             </div>
             <span className="text-xl font-black tracking-tighter text-slate-900 hidden sm:block">PORTFOLIO</span>
@@ -86,7 +121,7 @@ export default function AdminLayout({
         </div>
 
         {/* Center: Navigation Links (Desktop Only) */}
-        <div className="hidden lg:flex items-center bg-slate-50 p-1 rounded-xl">
+        <div className="flex items-center bg-slate-50 p-1 rounded-xl">
           {navigation.map((item) => {
             const isActive = pathname === item.href;
             return (
@@ -118,29 +153,45 @@ export default function AdminLayout({
             />
           </div>
 
-          <Button variant="ghost" size="icon" className="text-slate-500 relative bg-slate-50 rounded-xl shadow-sm border border-slate-100 h-11 w-11">
-            <Bell className="w-5 h-5" />
-            <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
-          </Button>
-
           <Button 
             variant="ghost" 
             size="icon" 
-            className="text-red-500 bg-red-50 hover:bg-red-100 rounded-xl hidden md:flex h-11 w-11"
-            onClick={handleLogout}
+            className="text-red-500 bg-red-50 hover:bg-red-100 rounded-xl h-11 w-11 shadow-sm border border-red-100"
+            onClick={() => setShowLogoutConfirm(true)}
           >
             <LogOut className="w-5 h-5" />
           </Button>
-          
-          {/* On Mobile: We show the Avatar as a simple profile icon but no menu (Bottom Nav handles navigation) */}
-          <Link href="/admin/profile" className="lg:hidden">
-            <Avatar className="h-10 w-10 border-2 border-slate-100 shadow-sm">
-               <AvatarImage src={profile?.profileImage || ''} />
-               <AvatarFallback className="bg-indigo-50 text-indigo-700 font-bold">AR</AvatarFallback>
-            </Avatar>
-          </Link>
         </div>
       </nav>
+
+      {/* Logout Confirmation Dialog (Premium Styling) */}
+      <Dialog open={showLogoutConfirm} onOpenChange={setShowLogoutConfirm}>
+        <DialogContent className="max-w-md rounded-[32px] border-none shadow-2xl p-8 bg-white overflow-hidden">
+           <div className="absolute top-0 right-0 p-8 opacity-5"><LogOut className="w-24 h-24" /></div>
+           <DialogHeader className="relative">
+              <div className="w-16 h-16 rounded-2xl bg-red-50 flex items-center justify-center text-red-500 mb-6 shadow-inner">
+                  <LogOut className="w-8 h-8" />
+              </div>
+              <DialogTitle className="text-2xl font-black text-slate-900 tracking-tight leading-tight uppercase">Session Termination</DialogTitle>
+              <p className="text-sm font-bold text-slate-400 mt-2">Are you sure you want to end your administrative session? You will need to authenticate again to return.</p>
+           </DialogHeader>
+           <div className="flex gap-4 mt-8 relative">
+              <Button 
+                className="flex-1 bg-red-500 hover:bg-red-600 text-white font-black rounded-2xl h-14 shadow-lg shadow-red-100 uppercase text-xs tracking-widest"
+                onClick={handleLogout}
+              >
+                Logout Now
+              </Button>
+              <Button 
+                variant="outline" 
+                className="flex-1 rounded-2xl h-14 font-black border-slate-100 text-slate-400 uppercase text-xs tracking-widest"
+                onClick={() => setShowLogoutConfirm(false)}
+              >
+                Cancel
+              </Button>
+           </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Main Content Area */}
       <main className="flex-1 pb-24 lg:pb-0">
