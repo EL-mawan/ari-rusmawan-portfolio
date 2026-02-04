@@ -9,15 +9,15 @@ import {
   Code,
   Settings,
   LogOut,
-  Menu,
-  X,
   Briefcase,
   Bell,
-  Search
+  Search,
+  User
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 const navigation = [
   { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
@@ -34,12 +34,25 @@ export default function AdminLayout({
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [profile, setProfile] = useState<any>(null);
 
   // Don't show layout on login page
   if (pathname === '/admin/login') {
     return <>{children}</>;
   }
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await fetch('/api/profile');
+        const data = await res.json();
+        if (data.success) setProfile(data.data);
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+      }
+    };
+    fetchProfile();
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -52,7 +65,11 @@ export default function AdminLayout({
 
   return (
     <div className="min-h-screen bg-[#F8FAFC]">
-      {/* Premium Top Navigation */}
+      {/* 
+          Premium Top Navigation 
+          On Mobile: Simplified header with only Logo and Notification
+          On Desktop: Full navigation
+      */}
       <nav className="sticky top-0 z-50 w-full bg-white border-b border-slate-100 shadow-sm px-4 md:px-8 h-20 flex items-center justify-between">
         {/* Left: Logo */}
         <div className="flex items-center gap-2">
@@ -68,7 +85,7 @@ export default function AdminLayout({
           </Link>
         </div>
 
-        {/* Center: Navigation Links (Desktop) */}
+        {/* Center: Navigation Links (Desktop Only) */}
         <div className="hidden lg:flex items-center bg-slate-50 p-1 rounded-xl">
           {navigation.map((item) => {
             const isActive = pathname === item.href;
@@ -101,70 +118,29 @@ export default function AdminLayout({
             />
           </div>
 
-          <Button variant="ghost" size="icon" className="text-slate-500 relative bg-slate-50 rounded-xl">
+          <Button variant="ghost" size="icon" className="text-slate-500 relative bg-slate-50 rounded-xl shadow-sm border border-slate-100 h-11 w-11">
             <Bell className="w-5 h-5" />
-            <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
+            <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
           </Button>
 
           <Button 
             variant="ghost" 
             size="icon" 
-            className="text-red-500 bg-red-50 hover:bg-red-100 rounded-xl hidden md:flex"
+            className="text-red-500 bg-red-50 hover:bg-red-100 rounded-xl hidden md:flex h-11 w-11"
             onClick={handleLogout}
           >
             <LogOut className="w-5 h-5" />
           </Button>
-
-          {/* Mobile Menu Toggle (Legacy) */}
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="lg:hidden bg-slate-50"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </Button>
+          
+          {/* On Mobile: We show the Avatar as a simple profile icon but no menu (Bottom Nav handles navigation) */}
+          <Link href="/admin/profile" className="lg:hidden">
+            <Avatar className="h-10 w-10 border-2 border-slate-100 shadow-sm">
+               <AvatarImage src={profile?.profileImage || ''} />
+               <AvatarFallback className="bg-indigo-50 text-indigo-700 font-bold">AR</AvatarFallback>
+            </Avatar>
+          </Link>
         </div>
       </nav>
-
-      {/* Legacy Mobile Menu Overlay */}
-      {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-40 lg:hidden overflow-hidden">
-          <div 
-            className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
-            onClick={() => setIsMobileMenuOpen(false)}
-          />
-          <div className="absolute top-20 left-0 right-0 bg-white border-b border-slate-100 p-4 shadow-2xl animate-in slide-in-from-top duration-300">
-            <div className="space-y-2">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className={cn(
-                    "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all",
-                    pathname === item.href 
-                      ? "bg-[#131161] text-white" 
-                      : "text-slate-600 hover:bg-slate-50"
-                  )}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <item.icon className="w-5 h-5" />
-                  {item.name}
-                </Link>
-              ))}
-              <div className="pt-4 mt-2 border-t border-slate-100">
-                <Button 
-                  variant="ghost" 
-                  className="w-full justify-start text-red-500 font-bold"
-                  onClick={handleLogout}
-                >
-                  <LogOut className="mr-3 h-5 w-5" /> Logout
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Main Content Area */}
       <main className="flex-1 pb-24 lg:pb-0">
@@ -173,7 +149,10 @@ export default function AdminLayout({
         </div>
       </main>
 
-      {/* Mobile Bottom Navigation - Banking Style UI */}
+      {/* 
+          Mobile Bottom Navigation - Banking Style UI 
+          Permanently fixed at the bottom for all admin pages
+      */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl border-t border-slate-100 px-4 py-4 pb-8 flex items-center justify-around shadow-[0_-15px_35px_-10px_rgba(0,0,0,0.1)]">
         {navigation.slice(0, 4).map((item) => {
           const isActive = pathname === item.href;
@@ -223,7 +202,7 @@ export default function AdminLayout({
         </Link>
       </div>
 
-      {/* Desktop Footer */}
+      {/* Desktop Footer Only */}
       <footer className="hidden lg:block py-8 px-4 text-center border-t border-slate-100">
         <p className="text-xs font-medium text-slate-400 uppercase tracking-widest">© 2024 Ari Rusmawan Dashboard • Premium Edition</p>
       </footer>

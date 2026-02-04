@@ -1,13 +1,16 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { User, Mail, Phone, MapPin, Save, Upload, X, Image as ImageIcon, ExternalLink } from 'lucide-react'
+import { User, Mail, Phone, MapPin, Save, Upload, X, Image as ImageIcon, ExternalLink, ArrowLeft, Camera } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { useToast } from '@/hooks/use-toast'
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import Link from 'next/link'
+import { cn } from '@/lib/utils'
 
 interface Profile {
   id: string
@@ -77,11 +80,7 @@ export default function AdminProfile() {
         })
       }
     } catch (error) {
-      toast({
-        title: "Error",
-        description: 'Gagal memuat profil',
-        variant: "destructive"
-      })
+      toast({ title: "Error", description: 'Gagal memuat profil', variant: "destructive" })
     } finally {
       setIsLoading(false)
     }
@@ -90,105 +89,44 @@ export default function AdminProfile() {
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
-
     setIsUploading(true)
     const uploadFormData = new FormData()
     uploadFormData.append('file', file)
     uploadFormData.append('type', 'profile')
-
     try {
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: uploadFormData,
-      })
-
+      const response = await fetch('/api/upload', { method: 'POST', body: uploadFormData })
       const data = await response.json()
-
       if (response.ok) {
-        setFormData(prev => ({
-          ...prev,
-          profileImage: data.url
-        }))
-        toast({
-          title: "Berhasil",
-          description: "Foto profil berhasil diunggah",
-        })
-      } else {
-        toast({
-          title: "Error",
-          description: data.error || "Gagal mengunggah gambar",
-          variant: "destructive"
-        })
+        setFormData(prev => ({ ...prev, profileImage: data.url }))
+        toast({ title: "Berhasil", description: "Foto profil berhasil diunggah" })
       }
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Terjadi kesalahan saat mengunggah",
-        variant: "destructive"
-      })
+      console.error(error)
     } finally {
       setIsUploading(false)
-      e.target.value = ''
     }
-  }
-
-  const removeProfileImage = () => {
-    setFormData(prev => ({
-      ...prev,
-      profileImage: ''
-    }))
   }
 
   const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSaving(true)
-    
     try {
       const socialLinks = {
         linkedin: formData.linkedinUrl,
         github: formData.githubUrl,
         twitter: formData.twitterUrl
       }
-
       const response = await fetch('/api/profile', {
         method: profile ? 'PUT' : 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          fullName: formData.fullName,
-          title: formData.title,
-          bio: formData.bio,
-          location: formData.location,
-          phone: formData.phone,
-          emailPublic: formData.emailPublic,
-          cvPath: formData.cvPath,
-          profileImage: formData.profileImage,
-          socialLinks
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...formData, socialLinks }),
       })
-
-      const data = await response.json()
-
-      if (response.ok && data.success) {
-        toast({
-          title: "Berhasil",
-          description: 'Profil berhasil diperbarui',
-        })
+      if (response.ok) {
+        toast({ title: "Berhasil", description: 'Profil berhasil diperbarui' })
         fetchProfile()
-      } else {
-        toast({
-          title: "Error",
-          description: data.error || 'Gagal menyimpan profil',
-          variant: "destructive"
-        })
       }
     } catch (error) {
-      toast({
-        title: "Error",
-        description: 'Terjadi kesalahan yang tidak terduga',
-        variant: "destructive"
-      })
+      console.error(error)
     } finally {
       setIsSaving(false)
     }
@@ -196,253 +134,140 @@ export default function AdminProfile() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+      <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center">
+        <div className="relative w-12 h-12">
+          <div className="absolute inset-0 border-4 border-indigo-100 rounded-full"></div>
+          <div className="absolute inset-0 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-4xl mx-auto p-6">
-        <div className="flex items-center justify-between mb-6 animate-fade-in">
-          <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-violet-600 to-indigo-600 dark:from-violet-400 dark:to-indigo-400">Profil Saya</h1>
+    <div className="min-h-screen bg-[#F8FAFC] pb-20 lg:pb-12 text-slate-900">
+      {/* Premium Header (Mobile Only) */}
+      <div className="lg:hidden relative h-64 w-full bg-linear-to-br from-[#536dfe] via-[#3d5afe] to-[#304ffe] rounded-b-[40px] px-6 pt-10 text-white overflow-hidden shadow-2xl mb-6">
+        <div className="absolute top-[-20%] left-[-10%] w-48 h-48 bg-white/10 rounded-full blur-3xl"></div>
+        <div className="flex items-center gap-4 relative z-10">
+          <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 rounded-xl bg-white/10" asChild>
+            <Link href="/admin/dashboard"><ArrowLeft className="w-5 h-5" /></Link>
+          </Button>
+          <h1 className="text-xl font-bold tracking-tight">Edit Bio Profile</h1>
+        </div>
+        <div className="mt-8 relative z-10 flex items-center gap-5">
+           <div className="relative">
+              <Avatar className="h-20 w-20 border-4 border-white/20 shadow-xl">
+                <AvatarImage src={formData.profileImage} />
+                <AvatarFallback className="bg-white/20 text-white font-black text-xl">AR</AvatarFallback>
+              </Avatar>
+              <button onClick={() => document.getElementById('profile-image-upload-mobile')?.click()} className="absolute bottom-0 right-0 w-7 h-7 bg-white rounded-full flex items-center justify-center text-indigo-600 shadow-lg border border-slate-50">
+                  <Camera className="w-3.5 h-3.5" />
+              </button>
+              <input id="profile-image-upload-mobile" type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
+           </div>
+           <div>
+              <h2 className="text-xl font-black">{formData.fullName || 'User Name'}</h2>
+              <p className="text-xs font-bold text-white/60 tracking-wider uppercase mt-0.5">{formData.title || 'Professional Title'}</p>
+           </div>
+        </div>
+      </div>
+
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        {/* Desktop Header */}
+        <div className="hidden lg:flex items-center justify-between py-8">
+          <div>
+            <h1 className="text-3xl font-black tracking-tight text-slate-900">Personal Account</h1>
+            <p className="text-slate-500 mt-1">Update your professional information and appearance.</p>
+          </div>
+          <Button onClick={handleSaveProfile} disabled={isSaving} className="bg-indigo-600 hover:bg-indigo-700 text-white font-black rounded-xl h-12 px-8 shadow-indigo-100 shadow-xl">
+             <Save className="w-5 h-5 mr-2" /> Save Profile
+          </Button>
         </div>
 
         <form onSubmit={handleSaveProfile} className="space-y-6">
-          <Card className="animate-slide-up hover:shadow-lg transition-all duration-300">
-            <CardHeader>
-              <CardTitle>Foto Profil</CardTitle>
-              <CardDescription>
-                Unggah foto profil Anda untuk ditampilkan di website.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex flex-col items-center gap-4">
-                {formData.profileImage ? (
-                  <div className="relative group">
-                    <img 
-                      src={formData.profileImage} 
-                      alt="Profil" 
-                      className="w-50 h-50 rounded-full object-cover border-4 border-primary/20 transition-all duration-300 group-hover:scale-105 group-hover:border-primary/40"
-                    />
-                    <button
-                      type="button"
-                      onClick={removeProfileImage}
-                      className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-full p-1.5 hover:bg-destructive/90 transition-all duration-200 hover:scale-110"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  </div>
-                ) : (
-                  <div className="w-50 h-50 rounded-full bg-primary/10 flex items-center justify-center border-4 border-primary/20 animate-pulse-slow">
-                    <ImageIcon className="w-16 h-16 text-primary/40" />
-                  </div>
-                )}
-                
-                <div className="flex items-center gap-4">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => document.getElementById('profile-image-upload')?.click()}
-                    disabled={isUploading}
-                    className="transition-all duration-200 hover:scale-105"
-                  >
-                    <Upload className="w-4 h-4 mr-2" />
-                    {isUploading ? 'Mengunggah...' : 'Unggah Foto'}
-                  </Button>
-                  <Input
-                    id="profile-image-upload"
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={handleImageUpload}
-                    disabled={isUploading}
-                  />
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Left Column - Desktop Profile Card */}
+                <div className="lg:col-span-1 space-y-6">
+                     <Card className="rounded-[32px] border-none shadow-2xl shadow-slate-200/50 bg-white overflow-hidden text-center p-8">
+                        <div className="relative inline-block group mb-4">
+                            <Avatar className="h-28 w-28 mx-auto border-4 border-slate-50 group-hover:scale-105 transition-all duration-500 cursor-pointer shadow-lg" onClick={() => document.getElementById('p-up')?.click()}>
+                                <AvatarImage src={formData.profileImage} />
+                                <AvatarFallback className="bg-indigo-50 text-indigo-600 font-black text-2xl">AR</AvatarFallback>
+                            </Avatar>
+                            <input id="p-up" type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
+                        </div>
+                        <h3 className="text-lg font-black text-slate-900">{formData.fullName || 'Professional'}</h3>
+                        <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest mt-1 mb-6">Account Status: Admin</p>
+                        <Button variant="outline" className="w-full rounded-2xl border-slate-100 font-bold h-10" onClick={() => document.getElementById('p-up')?.click()}>
+                            {isUploading ? 'Uploading...' : 'Change Photo'}
+                        </Button>
+                     </Card>
+                     
+                     <Card className="rounded-[32px] border-none shadow-2xl shadow-slate-200/50 bg-white p-6">
+                        <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Quick Links</h4>
+                        <div className="space-y-3">
+                            <a href="/" target="_blank" className="flex items-center justify-between p-3 bg-slate-50 rounded-2xl hover:bg-indigo-50 group transition-colors">
+                                <span className="text-xs font-bold text-slate-600 group-hover:text-indigo-600">View Public Site</span>
+                                <ExternalLink className="w-3.5 h-3.5 text-slate-300 group-hover:text-indigo-400" />
+                            </a>
+                            <div className="flex items-center justify-between p-3 bg-slate-50 rounded-2xl">
+                                <span className="text-xs font-bold text-slate-600">Resume Link</span>
+                                <div className={cn("w-2 h-2 rounded-full", formData.cvPath ? "bg-green-500" : "bg-amber-400")}></div>
+                            </div>
+                        </div>
+                     </Card>
                 </div>
-                <p className="text-sm text-muted-foreground text-center">
-                  Rekomendasi: Gambar persegi, minimal 1200x1200px
-                </p>
-              </div>
-            </CardContent>
-          </Card>
 
-          <Card className="animate-slide-up animation-delay-100 hover:shadow-lg transition-all duration-300">
-            <CardHeader>
-              <CardTitle>Informasi Pribadi</CardTitle>
-              <CardDescription>
-                Perbarui informasi pribadi Anda dan bagaimana Anda muncul di website.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="fullName">Nama Lengkap *</Label>
-                <div className="relative">
-                  <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    id="fullName"
-                    value={formData.fullName}
-                    onChange={(e) => setFormData({...formData, fullName: e.target.value})}
-                    className="pl-10 transition-all duration-200 focus:scale-[1.01]"
-                    required
-                  />
-                </div>
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="title">Jabatan Profesional *</Label>
-                <Input
-                  id="title"
-                  value={formData.title}
-                  onChange={(e) => setFormData({...formData, title: e.target.value})}
-                  placeholder="contoh: Full Stack Developer | Manajer Proyek"
-                  className="transition-all duration-200 focus:scale-[1.01]"
-                  required
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="bio">Biografi</Label>
-                <Textarea
-                  id="bio"
-                  value={formData.bio}
-                  onChange={(e) => setFormData({...formData, bio: e.target.value})}
-                  placeholder="Ceritakan tentang diri Anda..."
-                  rows={4}
-                  className="transition-all duration-200 focus:scale-[1.01]"
-                />
-              </div>
+                {/* Right Column - Forms */}
+                <div className="lg:col-span-2 space-y-6">
+                    <Card className="rounded-[32px] border-none shadow-2xl shadow-slate-200/50 bg-white p-8">
+                        <h4 className="text-sm font-black text-slate-900 uppercase tracking-widest mb-6">General Information</h4>
+                        <div className="space-y-5">
+                            <div className="space-y-2">
+                                <Label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1">Full Identity Name</Label>
+                                <Input className="rounded-2xl border-slate-100 h-12 focus:ring-indigo-600" value={formData.fullName} onChange={(e) => setFormData({...formData, fullName: e.target.value})} required />
+                            </div>
+                            <div className="space-y-2">
+                                <Label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1">Professional Headline</Label>
+                                <Input className="rounded-2xl border-slate-100 h-12 focus:ring-indigo-600" value={formData.title} onChange={(e) => setFormData({...formData, title: e.target.value})} placeholder="e.g. Senior Software Architect" required />
+                            </div>
+                            <div className="space-y-2">
+                                <Label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1">Complete Biography</Label>
+                                <Textarea className="rounded-2xl border-slate-100 focus:ring-indigo-600 h-32" value={formData.bio} onChange={(e) => setFormData({...formData, bio: e.target.value})} placeholder="Describe your career journey..." />
+                            </div>
+                        </div>
+                    </Card>
 
-              <div className="space-y-2">
-                <Label htmlFor="cvPath">Link CV / Resume</Label>
-                <div className="relative">
-                  <ExternalLink className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    id="cvPath"
-                    value={formData.cvPath}
-                    onChange={(e) => setFormData({...formData, cvPath: e.target.value})}
-                    placeholder="https://docs.google.com/..."
-                    className="pl-10 transition-all duration-200 focus:scale-[1.01]"
-                  />
+                    <Card className="rounded-[32px] border-none shadow-2xl shadow-slate-200/50 bg-white p-8">
+                        <h4 className="text-sm font-black text-slate-900 uppercase tracking-widest mb-6">Contact & Socials</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+                            <div className="space-y-2">
+                                <Label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1">Public Email</Label>
+                                <Input className="rounded-2xl border-slate-100 h-12 focus:ring-indigo-600" type="email" value={formData.emailPublic} onChange={(e) => setFormData({...formData, emailPublic: e.target.value})} />
+                            </div>
+                            <div className="space-y-2">
+                                <Label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1">Phone Number</Label>
+                                <Input className="rounded-2xl border-slate-100 h-12 focus:ring-indigo-600" value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} />
+                            </div>
+                        </div>
+                        <div className="space-y-5">
+                            <div className="relative group">
+                                 <Label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 mb-2 block">LinkedIn Personal URL</Label>
+                                 <Input className="rounded-2xl border-slate-100 h-12 focus:ring-indigo-600" value={formData.linkedinUrl} onChange={(e) => setFormData({...formData, linkedinUrl: e.target.value})} />
+                            </div>
+                            <div className="relative group">
+                                 <Label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 mb-2 block">Github Repository URL</Label>
+                                 <Input className="rounded-2xl border-slate-100 h-12 focus:ring-indigo-600" value={formData.githubUrl} onChange={(e) => setFormData({...formData, githubUrl: e.target.value})} />
+                            </div>
+                        </div>
+                    </Card>
+                    
+                    <div className="lg:hidden h-4"></div>
+                    <Button onClick={handleSaveProfile} disabled={isSaving} className="lg:hidden w-full bg-[#0e1b52] hover:bg-[#13236e] text-white font-black rounded-2xl h-14 shadow-2xl mb-8">
+                       {isSaving ? 'Saving...' : 'UPDATE PROFILE'}
+                    </Button>
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  Masukkan link ke CV Anda (Google Drive, LinkedIn, atau file yang diupload)
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="animate-slide-up animation-delay-200 hover:shadow-lg transition-all duration-300">
-            <CardHeader>
-              <CardTitle>Informasi Kontak</CardTitle>
-              <CardDescription>
-                Detail kontak Anda yang ditampilkan di website.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="emailPublic">Email Publik</Label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      id="emailPublic"
-                      type="email"
-                      value={formData.emailPublic}
-                      onChange={(e) => setFormData({...formData, emailPublic: e.target.value})}
-                      className="pl-10 transition-all duration-200 focus:scale-[1.01]"
-                      placeholder="email@anda.com"
-                    />
-                  </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Nomor Telepon</Label>
-                  <div className="relative">
-                    <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      id="phone"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                      className="pl-10 transition-all duration-200 focus:scale-[1.01]"
-                      placeholder="+62 xxx-xxxx-xxxx"
-                    />
-                  </div>
-                </div>
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="location">Lokasi</Label>
-                <div className="relative">
-                  <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    id="location"
-                    value={formData.location}
-                    onChange={(e) => setFormData({...formData, location: e.target.value})}
-                    className="pl-10 transition-all duration-200 focus:scale-[1.01]"
-                    placeholder="Kota, Negara"
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="animate-slide-up animation-delay-300 hover:shadow-lg transition-all duration-300">
-            <CardHeader>
-              <CardTitle>Profil Media Sosial</CardTitle>
-              <CardDescription>
-                Tautan ke profil media sosial Anda.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="linkedinUrl">URL LinkedIn</Label>
-                <Input
-                  id="linkedinUrl"
-                  type="url"
-                  value={formData.linkedinUrl}
-                  onChange={(e) => setFormData({...formData, linkedinUrl: e.target.value})}
-                  placeholder="https://linkedin.com/in/username"
-                  className="transition-all duration-200 focus:scale-[1.01]"
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="githubUrl">URL GitHub</Label>
-                <Input
-                  id="githubUrl"
-                  type="url"
-                  value={formData.githubUrl}
-                  onChange={(e) => setFormData({...formData, githubUrl: e.target.value})}
-                  placeholder="https://github.com/username"
-                  className="transition-all duration-200 focus:scale-[1.01]"
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="twitterUrl">URL Twitter</Label>
-                <Input
-                  id="twitterUrl"
-                  type="url"
-                  value={formData.twitterUrl}
-                  onChange={(e) => setFormData({...formData, twitterUrl: e.target.value})}
-                  placeholder="https://twitter.com/username"
-                  className="transition-all duration-200 focus:scale-[1.01]"
-                />
-              </div>
-            </CardContent>
-          </Card>
-
-          <div className="flex justify-end animate-slide-up animation-delay-400">
-            <Button 
-              type="submit" 
-              disabled={isSaving} 
-              className="w-full sm:w-auto transition-all duration-200 hover:scale-105"
-            >
-              <Save className="w-4 h-4 mr-2" />
-              {isSaving ? 'Menyimpan...' : 'Simpan Perubahan'}
-            </Button>
-          </div>
+            </div>
         </form>
       </div>
     </div>
