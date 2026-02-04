@@ -103,18 +103,14 @@ export default function AdminLogin() {
           
           <CardHeader className="text-center pb-8 pt-8 space-y-4">
             {/* Logo with Gradient Background */}
-            <div className="relative mx-auto w-20 h-20 mb-2">
-              <div className="absolute inset-0 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-2xl rotate-6 animate-pulse"></div>
-              <div className="relative w-full h-full bg-gradient-to-br from-violet-500 to-indigo-500 rounded-2xl flex items-center justify-center shadow-lg overflow-hidden">
-                {settings?.logo_url ? (
-                  <img 
-                    src={settings.logo_url} 
-                    alt="Logo" 
-                    className="w-14 h-14 object-contain"
-                  />
-                ) : (
-                  <span className="text-3xl font-bold text-white">AR</span>
-                )}
+            <div className="relative mx-auto w-24 h-24 mb-2">
+              <div className="absolute inset-0 bg-gradient-to-br from-violet-600/20 to-indigo-600/20 rounded-full rotate-6 animate-pulse"></div>
+              <div className="relative w-full h-full bg-white rounded-full flex items-center justify-center shadow-lg overflow-hidden border border-violet-100 p-0">
+                <img 
+                  src="/Gemini_Generated_Image_31214k31214k3121.png" 
+                  alt="Logo" 
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
             
@@ -229,7 +225,7 @@ export default function AdminLogin() {
 
         {/* Bottom Text */}
         <p className="text-center mt-6 text-sm text-white/80">
-          © 2024 Ari Rusmawan Portfolio. All rights reserved.
+          © 2020 Ari Rusmawan Portfolio. All rights reserved.
         </p>
       </div>
 

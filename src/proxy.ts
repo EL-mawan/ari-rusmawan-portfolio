@@ -6,7 +6,7 @@ import { jwtVerify } from 'jose';
 // Must match the one used in /src/app/api/admin/auth/route.ts
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const method = request.method;
 

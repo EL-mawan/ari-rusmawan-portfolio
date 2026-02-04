@@ -69,9 +69,13 @@ export default function AdminLayout({
       <nav className="sticky top-0 z-50 w-full bg-white border-b border-slate-100 shadow-sm px-4 md:px-8 h-20 flex items-center justify-between">
         {/* Left: Logo */}
         <div className="flex items-center gap-2">
-          <Link href="/admin/dashboard" className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-indigo-200">
-              <Shield className="w-6 h-6" />
+          <Link href="/admin/dashboard" className="flex items-center gap-2 group">
+            <div className="relative w-12 h-12 flex items-center justify-center transition-transform duration-300 group-hover:scale-110 rounded-full border border-slate-100 overflow-hidden bg-white shadow-sm">
+              <img 
+                src="/Gemini_Generated_Image_31214k31214k3121.png" 
+                alt="Logo" 
+                className="w-full h-full object-cover"
+              />
             </div>
             <span className="text-xl font-black tracking-tighter text-slate-900 hidden sm:block">PORTFOLIO</span>
           </Link>
@@ -207,7 +211,7 @@ export default function AdminLayout({
 
       {/* Sub-footer or Stats footer if needed */}
       <footer className="py-8 px-4 text-center border-t border-slate-100">
-        <p className="text-xs font-medium text-slate-400 uppercase tracking-widest">© 2024 Ari Rusmawan Dashboard • Premium Edition</p>
+        <p className="text-xs font-medium text-slate-400 uppercase tracking-widest">© 2020 Ari Rusmawan Dashboard • Premium Edition</p>
       </footer>
     </div>
   );
