@@ -11,26 +11,13 @@ import {
   LogOut,
   Menu,
   X,
-  GraduationCap,
   Briefcase,
-  User,
-  Shield,
   Bell,
-  Search,
-  ChevronDown
+  Search
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 const navigation = [
   { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
@@ -65,7 +52,7 @@ export default function AdminLayout({
 
   return (
     <div className="min-h-screen bg-[#F8FAFC]">
-      {/* Premium Top Navigation - Styled after the "Express" image */}
+      {/* Premium Top Navigation */}
       <nav className="sticky top-0 z-50 w-full bg-white border-b border-slate-100 shadow-sm px-4 md:px-8 h-20 flex items-center justify-between">
         {/* Left: Logo */}
         <div className="flex items-center gap-2">
@@ -103,7 +90,7 @@ export default function AdminLayout({
           })}
         </div>
 
-        {/* Right: Actions & Profile */}
+        {/* Right: Actions */}
         <div className="flex items-center gap-4">
           <div className="hidden md:flex items-center relative group">
             <Search className="w-4 h-4 absolute left-3 text-slate-400" />
@@ -119,39 +106,16 @@ export default function AdminLayout({
             <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
           </Button>
 
-          <div className="h-8 w-px bg-slate-100 mx-2 hidden md:block"></div>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="text-red-500 bg-red-50 hover:bg-red-100 rounded-xl hidden md:flex"
+            onClick={handleLogout}
+          >
+            <LogOut className="w-5 h-5" />
+          </Button>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="flex items-center gap-3 p-1 rounded-xl hover:bg-slate-50 transition-all outline-none text-left">
-                <div className="hidden sm:flex flex-col items-end">
-                  <span className="text-xs font-bold text-slate-900 leading-none">Ari Rusmawan</span>
-                  <span className="text-[10px] font-medium text-slate-500 mt-1 uppercase tracking-wider">Owner</span>
-                </div>
-                <Avatar className="h-10 w-10 border-2 border-white shadow-sm ring-1 ring-slate-100">
-                  <AvatarImage src="" />
-                  <AvatarFallback className="bg-indigo-50 text-indigo-700 font-bold">AR</AvatarFallback>
-                </Avatar>
-                <ChevronDown className="w-4 h-4 text-slate-400" />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 mt-2 rounded-xl p-2">
-              <DropdownMenuLabel className="font-bold">My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => router.push('/admin/profile')} className="rounded-lg">
-                <User className="mr-2 h-4 w-4" /> Profile
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => router.push('/admin/settings')} className="rounded-lg">
-                <Settings className="mr-2 h-4 w-4" /> Settings
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleLogout} className="text-red-500 focus:text-red-500 rounded-lg">
-                <LogOut className="mr-2 h-4 w-4" /> Logout
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          {/* Mobile Menu Toggle */}
+          {/* Mobile Menu Toggle (Legacy) */}
           <Button 
             variant="ghost" 
             size="icon" 
@@ -163,7 +127,7 @@ export default function AdminLayout({
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
+      {/* Legacy Mobile Menu Overlay */}
       {isMobileMenuOpen && (
         <div className="fixed inset-0 z-40 lg:hidden overflow-hidden">
           <div 
@@ -203,15 +167,65 @@ export default function AdminLayout({
       )}
 
       {/* Main Content Area */}
-      <main className="flex-1">
+      <main className="flex-1 pb-24 lg:pb-0">
         <div className="animate-fade-in-up duration-500">
           {children}
         </div>
       </main>
 
-      {/* Sub-footer or Stats footer if needed */}
-      <footer className="py-8 px-4 text-center border-t border-slate-100">
-        <p className="text-xs font-medium text-slate-400 uppercase tracking-widest">© 2020 Ari Rusmawan Dashboard • Premium Edition</p>
+      {/* Mobile Bottom Navigation - Banking Style UI */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl border-t border-slate-100 px-4 py-4 pb-8 flex items-center justify-around shadow-[0_-15px_35px_-10px_rgba(0,0,0,0.1)]">
+        {navigation.slice(0, 4).map((item) => {
+          const isActive = pathname === item.href;
+          return (
+            <Link
+              key={item.name}
+              href={item.href}
+              className={cn(
+                "flex flex-col items-center gap-1.5 transition-all duration-300 flex-1 text-center",
+                isActive ? "opacity-100" : "opacity-40"
+              )}
+            >
+              <div className={cn(
+                "w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300",
+                isActive ? "bg-indigo-600 text-white shadow-lg shadow-indigo-100 scale-110" : "bg-transparent text-slate-900"
+              )}>
+                <item.icon className="w-5 h-5 stroke-[2.5]" />
+              </div>
+              <span className={cn(
+                "text-[10px] font-bold tracking-tight transition-all duration-300",
+                isActive ? "text-indigo-600" : "text-slate-600"
+              )}>
+                {item.name === 'Dashboard' ? 'Home' : item.name}
+              </span>
+            </Link>
+          );
+        })}
+        <Link
+          href="/admin/settings"
+          className={cn(
+            "flex flex-col items-center gap-1.5 transition-all duration-300 flex-1 text-center",
+            pathname === '/admin/settings' ? "opacity-100" : "opacity-40"
+          )}
+        >
+          <div className={cn(
+            "w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300",
+            pathname === '/admin/settings' ? "bg-indigo-600 text-white shadow-lg shadow-indigo-100 scale-110" : "bg-transparent text-slate-900"
+          )}>
+            <Settings className="w-5 h-5 stroke-[2.5]" />
+          </div>
+          <span className={cn(
+            "text-[10px] font-bold tracking-tight transition-all duration-300",
+            pathname === '/admin/settings' ? "text-indigo-600" : "text-slate-600"
+          )}>
+            Settings
+          </span>
+        </Link>
+      </div>
+
+      {/* Desktop Footer */}
+      <footer className="hidden lg:block py-8 px-4 text-center border-t border-slate-100">
+        <p className="text-xs font-medium text-slate-400 uppercase tracking-widest">© 2024 Ari Rusmawan Dashboard • Premium Edition</p>
       </footer>
     </div>
   );
