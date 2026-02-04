@@ -15,21 +15,29 @@ import {
   Briefcase,
   User,
   Shield,
-  ChevronRight
+  Bell,
+  Search,
+  ChevronDown
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 const navigation = [
-  { name: 'Dasbor', href: '/admin/dashboard', icon: LayoutDashboard },
-  { name: 'Profil', href: '/admin/profile', icon: User },
-  { name: 'Pesan', href: '/admin/messages', icon: MessageSquare },
-  { name: 'Proyek', href: '/admin/projects', icon: FolderOpen },
-  { name: 'Keahlian', href: '/admin/skills', icon: Code },
-  { name: 'Pendidikan', href: '/admin/education', icon: GraduationCap },
-  { name: 'Pengalaman', href: '/admin/experience', icon: Briefcase },
-  { name: 'Pengaturan', href: '/admin/settings', icon: Settings },
+  { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
+  { name: 'Projects', href: '/admin/projects', icon: FolderOpen },
+  { name: 'Skills', href: '/admin/skills', icon: Code },
+  { name: 'Messages', href: '/admin/messages', icon: MessageSquare },
+  { name: 'Resume', href: '/admin/experience', icon: Briefcase },
 ];
 
 export default function AdminLayout({
@@ -56,132 +64,151 @@ export default function AdminLayout({
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Top Navigation - Modern Gradient Header */}
-      <header className="sticky top-0 z-50 w-full border-b border-violet-500/20 bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-lg shadow-violet-500/20">
-        <div className="container flex h-16 items-center px-4 max-w-7xl mx-auto">
-          <div className="flex items-center gap-4">
-            <button
-              className="md:hidden p-1 hover:bg-white/10 rounded-lg transition-colors"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
-            <Link href="/admin/dashboard" className="flex items-center gap-2 group">
-              <div className="p-1.5 bg-white/10 rounded-lg group-hover:bg-white/20 transition-colors backdrop-blur-sm">
-                <Shield className="w-5 h-5" />
-              </div>
-              <span className="text-xl font-bold tracking-tight">Admin Portal</span>
-            </Link>
-          </div>
-
-          <div className="ml-auto flex items-center gap-3">
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="hidden sm:flex text-white hover:bg-white/10 hover:text-white border border-transparent hover:border-white/20" 
-              asChild
-            >
-              <Link href="/" target="_blank">
-                Lihat Situs
-                <ChevronRight className="ml-1 h-3 w-3" />
-              </Link>
-            </Button>
-            
-            <div className="h-6 w-px bg-white/20 mx-1 hidden sm:block"></div>
-            
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="text-white hover:bg-red-500/20 hover:text-white hover:border-red-500/50 border border-transparent" 
-              onClick={handleLogout}
-            >
-              <LogOut className="h-4 w-4 mr-2" />
-              <span className="hidden sm:inline">Keluar</span>
-            </Button>
-          </div>
+    <div className="min-h-screen bg-[#F8FAFC]">
+      {/* Premium Top Navigation - Styled after the "Express" image */}
+      <nav className="sticky top-0 z-50 w-full bg-white border-b border-slate-100 shadow-sm px-4 md:px-8 h-20 flex items-center justify-between">
+        {/* Left: Logo */}
+        <div className="flex items-center gap-2">
+          <Link href="/admin/dashboard" className="flex items-center gap-2">
+            <div className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-indigo-200">
+              <Shield className="w-6 h-6" />
+            </div>
+            <span className="text-xl font-black tracking-tighter text-slate-900 hidden sm:block">PORTFOLIO</span>
+          </Link>
         </div>
-      </header>
 
-      <div className="container flex-1 items-start md:grid md:grid-cols-[240px_minmax(0,1fr)] md:gap-6 lg:gap-10 px-4 py-6 max-w-7xl mx-auto">
-        {/* Sidebar Navigation */}
-        <aside 
-          className={cn(
-            "fixed inset-0 z-40 w-64 transform bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-transform duration-300 ease-in-out shadow-2xl md:shadow-none md:translate-x-0 md:sticky md:top-6 md:h-[calc(100vh-8rem)] md:w-full md:bg-transparent md:border-none",
-            isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-          )}
-        >
-          {/* Mobile Header in Sidebar */}
-          <div className="flex items-center justify-between p-4 border-b md:hidden">
-            <span className="font-bold text-lg">Menu</span>
-            <button onClick={() => setIsMobileMenuOpen(false)}>
-              <X className="h-5 w-5" />
-            </button>
+        {/* Center: Navigation Links (Desktop) */}
+        <div className="hidden lg:flex items-center bg-slate-50 p-1 rounded-xl">
+          {navigation.map((item) => {
+            const isActive = pathname === item.href;
+            return (
+              <Link
+                key={item.name}
+                href={item.href}
+                className={cn(
+                  "px-5 py-2.5 rounded-lg text-sm font-bold transition-all flex items-center gap-2",
+                  isActive 
+                    ? "bg-[#131161] text-white shadow-lg shadow-indigo-100" 
+                    : "text-slate-500 hover:text-slate-900 hover:bg-slate-100"
+                )}
+              >
+                <item.icon className={cn("w-4 h-4", isActive ? "text-white" : "text-slate-400")} />
+                {item.name}
+              </Link>
+            );
+          })}
+        </div>
+
+        {/* Right: Actions & Profile */}
+        <div className="flex items-center gap-4">
+          <div className="hidden md:flex items-center relative group">
+            <Search className="w-4 h-4 absolute left-3 text-slate-400" />
+            <input 
+              type="text" 
+              placeholder="Search data..." 
+              className="bg-slate-50 border-none rounded-xl pl-10 pr-4 py-2 text-sm w-48 focus:ring-2 focus:ring-indigo-500 transition-all outline-none"
+            />
           </div>
 
-          <div className="h-full overflow-y-auto py-4 md:py-0 px-3 md:px-0">
-            <nav className="space-y-1.5">
-              {navigation.map((item) => {
-                const isActive = pathname === item.href;
-                return (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className={cn(
-                      "group flex items-center px-4 py-3.5 text-base font-medium rounded-xl transition-all duration-200",
-                      isActive 
-                        ? "bg-white text-violet-700 shadow-sm ring-1 ring-gray-200 dark:bg-gray-800 dark:text-violet-400 dark:ring-gray-700" 
-                        : "text-gray-600 hover:bg-white hover:text-violet-600 hover:shadow-sm hover:ring-1 hover:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-violet-400 dark:hover:ring-gray-700"
-                    )}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    <item.icon 
-                      className={cn(
-                        "mr-3 h-6 w-6 transition-colors",
-                        isActive 
-                          ? "text-violet-600 dark:text-violet-400" 
-                          : "text-gray-400 group-hover:text-violet-500 dark:text-gray-500 dark:group-hover:text-violet-400"
-                      )} 
-                    />
-                    {item.name}
-                    {isActive && (
-                      <div className="ml-auto w-2 h-2 rounded-full bg-violet-600 dark:bg-violet-400"></div>
-                    )}
-                  </Link>
-                );
-              })}
-            </nav>
+          <Button variant="ghost" size="icon" className="text-slate-500 relative bg-slate-50 rounded-xl">
+            <Bell className="w-5 h-5" />
+            <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
+          </Button>
 
-            {/* User Profile Card */}
-            <div className="mt-6 p-4 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 text-white shadow-lg shadow-violet-500/20 md:block hidden">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white font-bold border border-white/30">
-                  AR
+          <div className="h-8 w-px bg-slate-100 mx-2 hidden md:block"></div>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="flex items-center gap-3 p-1 rounded-xl hover:bg-slate-50 transition-all outline-none text-left">
+                <div className="hidden sm:flex flex-col items-end">
+                  <span className="text-xs font-bold text-slate-900 leading-none">Ari Rusmawan</span>
+                  <span className="text-[10px] font-medium text-slate-500 mt-1 uppercase tracking-wider">Owner</span>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-bold truncate">Admin</p>
-                  <p className="text-xs text-violet-100 truncate opacity-80">Administrator</p>
-                </div>
+                <Avatar className="h-10 w-10 border-2 border-white shadow-sm ring-1 ring-slate-100">
+                  <AvatarImage src="" />
+                  <AvatarFallback className="bg-indigo-50 text-indigo-700 font-bold">AR</AvatarFallback>
+                </Avatar>
+                <ChevronDown className="w-4 h-4 text-slate-400" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56 mt-2 rounded-xl p-2">
+              <DropdownMenuLabel className="font-bold">My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => router.push('/admin/profile')} className="rounded-lg">
+                <User className="mr-2 h-4 w-4" /> Profile
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push('/admin/settings')} className="rounded-lg">
+                <Settings className="mr-2 h-4 w-4" /> Settings
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={handleLogout} className="text-red-500 focus:text-red-500 rounded-lg">
+                <LogOut className="mr-2 h-4 w-4" /> Logout
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          {/* Mobile Menu Toggle */}
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="lg:hidden bg-slate-50"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </Button>
+        </div>
+      </nav>
+
+      {/* Mobile Menu Overlay */}
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 z-40 lg:hidden overflow-hidden">
+          <div 
+            className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
+          <div className="absolute top-20 left-0 right-0 bg-white border-b border-slate-100 p-4 shadow-2xl animate-in slide-in-from-top duration-300">
+            <div className="space-y-2">
+              {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={cn(
+                    "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all",
+                    pathname === item.href 
+                      ? "bg-[#131161] text-white" 
+                      : "text-slate-600 hover:bg-slate-50"
+                  )}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <item.icon className="w-5 h-5" />
+                  {item.name}
+                </Link>
+              ))}
+              <div className="pt-4 mt-2 border-t border-slate-100">
+                <Button 
+                  variant="ghost" 
+                  className="w-full justify-start text-red-500 font-bold"
+                  onClick={handleLogout}
+                >
+                  <LogOut className="mr-3 h-5 w-5" /> Logout
+                </Button>
               </div>
             </div>
           </div>
-        </aside>
+        </div>
+      )}
 
-        {/* Overlay for mobile */}
-        {isMobileMenuOpen && (
-          <div 
-            className="fixed inset-0 z-30 bg-black/50 backdrop-blur-sm md:hidden"
-            onClick={() => setIsMobileMenuOpen(false)}
-          />
-        )}
+      {/* Main Content Area */}
+      <main className="flex-1">
+        <div className="animate-fade-in-up duration-500">
+          {children}
+        </div>
+      </main>
 
-        {/* Main Content */}
-        <main className="flex w-full flex-col overflow-hidden">
-          <div className="animate-fade-in-up">
-            {children}
-          </div>
-        </main>
-      </div>
+      {/* Sub-footer or Stats footer if needed */}
+      <footer className="py-8 px-4 text-center border-t border-slate-100">
+        <p className="text-xs font-medium text-slate-400 uppercase tracking-widest">© 2024 Ari Rusmawan Dashboard • Premium Edition</p>
+      </footer>
     </div>
   );
 }
