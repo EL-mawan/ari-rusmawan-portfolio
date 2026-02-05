@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { Eye, EyeOff, Lock, Mail, Shield, Home, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -105,8 +106,8 @@ export default function AdminLogin() {
           
           <CardHeader className="text-center pb-8 pt-8 space-y-4">
             {/* Logo with Gradient Background */}
-            <div className="relative mx-auto w-24 h-24 mb-2">
-              <div className="absolute inset-0 bg-gradient-to-br from-violet-600/20 to-indigo-600/20 rounded-full rotate-6 animate-pulse"></div>
+            <Link href="/" className="relative mx-auto w-24 h-24 mb-2 hover:scale-105 transition-transform group">
+              <div className="absolute inset-0 bg-gradient-to-br from-violet-600/20 to-indigo-600/20 rounded-full rotate-6 animate-pulse group-hover:rotate-12 transition-transform"></div>
               <div className="relative w-full h-full bg-white rounded-full flex items-center justify-center shadow-lg overflow-hidden border border-violet-100 p-0">
                 <img 
                   src="/Gemini_Generated_Image_31214k31214k3121.png" 
@@ -114,7 +115,7 @@ export default function AdminLogin() {
                   className="w-full h-full object-cover"
                 />
               </div>
-            </div>
+            </Link>
             
             <div className="space-y-2">
               <CardTitle className="text-3xl font-bold bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent">
