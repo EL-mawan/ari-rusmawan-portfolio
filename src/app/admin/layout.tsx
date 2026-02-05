@@ -96,7 +96,8 @@ export default function AdminLayout({
   const handleLogout = async () => {
     try {
       await fetch('/api/admin/auth', { method: 'DELETE' });
-      router.push('/admin/login');
+      // Redirect to admin login page
+      router.replace('/admin/login');
     } catch (error) {
       console.error('Logout error:', error);
     }
