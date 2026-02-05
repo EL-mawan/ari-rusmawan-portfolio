@@ -253,6 +253,17 @@ export default function AdminLayout({
             Settings
           </span>
         </Link>
+        <button
+          onClick={() => setShowLogoutConfirm(true)}
+          className="flex flex-col items-center gap-1.5 transition-all duration-300 flex-1 text-center opacity-40 hover:opacity-100"
+        >
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-transparent text-red-500">
+            <LogOut className="w-5 h-5 stroke-[2.5]" />
+          </div>
+          <span className="text-[10px] font-bold tracking-tight text-slate-600">
+            Logout
+          </span>
+        </button>
       </div>
 
       {/* Desktop Footer Only */}
