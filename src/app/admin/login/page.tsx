@@ -64,7 +64,9 @@ export default function AdminLogin() {
           description: "Selamat datang di panel admin!",
         })
 
-        router.push('/admin/dashboard')
+        // Direct redirect to dashboard
+        router.replace('/admin/dashboard')
+        router.refresh()
       } else {
         toast({
           title: "Login Gagal",
