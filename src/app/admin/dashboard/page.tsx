@@ -283,7 +283,6 @@ export default function AdminDashboard() {
               { label: 'Experience', icon: Briefcase, color: 'bg-pink-50 text-pink-600', href: '/admin/experience' },
               { label: 'Messages', icon: MessageSquare, color: 'bg-cyan-50 text-cyan-600', href: '/admin/messages' },
               { label: 'Settings', icon: Settings, color: 'bg-slate-50 text-slate-600', href: '/admin/settings' },
-              { label: 'Public Site', icon: ExternalLink, color: 'bg-purple-50 text-purple-600', href: '/' },
             ].map((action, i) => (
               <Link key={i} href={action.href} className="flex flex-col items-center gap-3">
                 <div className={cn("w-[72px] h-[72px] rounded-[26px] flex items-center justify-center shadow-[0_15px_30px_rgba(0,0,0,0.04)] bg-white active:scale-90 transition-all border border-slate-50", action.color)}>
