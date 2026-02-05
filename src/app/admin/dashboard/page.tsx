@@ -72,6 +72,7 @@ interface Stats {
 const DEFAULT_PROFILE_IMAGE = '/uploads/profile/1764442818168-WhatsApp Image 2022-06-01 at 17.06.23.PNG'
 
 export default function AdminDashboard() {
+  const [mounted, setMounted] = useState(false)
   const [stats, setStats] = useState<Stats>({
     totalMessages: 0,
     unreadMessages: 0,
@@ -87,6 +88,7 @@ export default function AdminDashboard() {
   const [profile, setProfile] = useState<Profile | null>(null)
 
   useEffect(() => {
+    setMounted(true)
     fetchDashboardData()
   }, [])
 
@@ -137,7 +139,12 @@ export default function AdminDashboard() {
 
       setRecentMessages(Array.isArray(messages) ? messages.slice(0, 5) : [])
       setSkills(Array.isArray(skillsData) ? skillsData : [])
-      if (profileData) setProfile(profileData)
+      
+      if (profileData && typeof profileData === 'object') {
+        setProfile(profileData)
+      } else {
+        setProfile(null)
+      }
 
     } catch (error) {
       console.error('Error fetching dashboard data:', error)
@@ -148,14 +155,30 @@ export default function AdminDashboard() {
 
   const chartData = useMemo(() => {
     const months = ['Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep']
-    return months.map(month => ({
+    // Return static data initially to avoid hydration mismatch, or only generate on client
+    return months.map((month, index) => ({
       name: month,
-      messages: Math.floor(Math.random() * 50) + 10,
-      projects: Math.floor(Math.random() * 5) + 2,
+      messages: 20 + (index * 5), // Deterministic data
+      projects: 2 + (index % 3),
     }))
   }, [])
 
-  if (isLoading) {
+  // Function to safely format dates
+  const formatDate = (dateString: string | Date) => {
+    try {
+      const date = new Date(dateString)
+      if (isNaN(date.getTime())) return 'N/A'
+      return date.toLocaleDateString('en-US', { 
+        weekday: 'short', 
+        hour: '2-digit', 
+        minute: '2-digit' 
+      })
+    } catch (e) {
+      return 'N/A'
+    }
+  }
+
+  if (isLoading || !mounted) {
     return (
       <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center">
         <div className="relative w-12 h-12">
@@ -420,13 +443,13 @@ export default function AdminDashboard() {
                       <ArrowDownLeft className="w-7 h-7 stroke-[2.5]" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h4 className="text-sm font-black text-slate-900 truncate tracking-tight">{msg.name}</h4>
+                      <h4 className="text-sm font-black text-slate-900 truncate tracking-tight">{msg.name || 'Anonymous'}</h4>
                       <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mt-1">
-                        {new Date(msg.createdAt).toLocaleDateString('en-US', { weekday: 'long', hour: '2-digit', minute: '2-digit' })}
+                        {formatDate(msg.createdAt)}
                       </p>
                     </div>
                     <div className="text-right">
-                      {!msg.isRead ? (
+                      {msg && !msg.isRead ? (
                         <div className="text-green-500 flex flex-col items-end">
                             <span className="text-xs font-black">+1 NEW</span>
                             <span className="text-[10px] font-black uppercase text-slate-300 opacity-50">UNREAD</span>

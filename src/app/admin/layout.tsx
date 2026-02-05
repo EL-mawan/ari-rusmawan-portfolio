@@ -52,8 +52,9 @@ export default function AdminLayout({
     const fetchProfile = async () => {
       try {
         const res = await fetch('/api/profile');
+        if (!res.ok) return;
         const data = await res.json();
-        if (data.success) setProfile(data.data);
+        if (data && data.success) setProfile(data.data);
       } catch (error) {
         console.error('Error fetching profile:', error);
       }
