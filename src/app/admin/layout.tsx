@@ -11,7 +11,9 @@ import {
   LogOut,
   Briefcase,
   Search,
-  User
+  User,
+  GraduationCap,
+  Sparkles
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useState, useEffect } from 'react';
@@ -28,8 +30,10 @@ const navigation = [
   { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
   { name: 'Projects', href: '/admin/projects', icon: FolderOpen },
   { name: 'Skills', href: '/admin/skills', icon: Code },
-  { name: 'Messages', href: '/admin/messages', icon: MessageSquare },
+  { name: 'Education', href: '/admin/education', icon: GraduationCap },
   { name: 'Resume', href: '/admin/experience', icon: Briefcase },
+  { name: 'Messages', href: '/admin/messages', icon: MessageSquare },
+  { name: 'Reviews', href: '/admin/testimonials', icon: Sparkles },
 ];
 
 export default function AdminLayout({
@@ -113,9 +117,9 @@ export default function AdminLayout({
             <div className="relative w-12 h-12 flex items-center justify-center transition-transform duration-500 group-hover:scale-110 rounded-full border-2 border-indigo-100 overflow-hidden bg-white shadow-[0_5px_15px_-3px_rgba(0,0,0,0.1)] p-1">
               <div className="absolute inset-0 rounded-full border border-indigo-600/5 shadow-inner"></div>
               <img 
-                src="/uploads/profile/1764442818168-WhatsApp Image 2022-06-01 at 17.06.23.PNG" 
+                src="/logo.png" 
                 alt="Logo" 
-                className="w-full h-full object-cover rounded-full transition-transform duration-700 group-hover:rotate-12"
+                className="w-full h-full object-contain transition-transform duration-700 group-hover:rotate-12"
               />
             </div>
             <span className="text-xl font-black tracking-tighter text-slate-900 hidden sm:block">PORTFOLIO</span>
@@ -155,14 +159,15 @@ export default function AdminLayout({
             />
           </div>
 
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="text-red-500 bg-red-50 hover:bg-red-100 rounded-xl h-11 w-11 shadow-sm border border-red-100"
-            onClick={() => setShowLogoutConfirm(true)}
-          >
-            <LogOut className="w-5 h-5" />
-          </Button>
+          <Link href="/admin/settings">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="text-slate-500 bg-slate-50 hover:bg-slate-100 rounded-xl h-11 w-11 shadow-sm border border-slate-100"
+            >
+              <Settings className="w-5 h-5" />
+            </Button>
+          </Link>
         </div>
       </nav>
 
@@ -207,7 +212,7 @@ export default function AdminLayout({
           Permanently fixed at the bottom for all admin pages
       */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl border-t border-slate-100 px-4 py-4 pb-8 flex items-center justify-around shadow-[0_-15px_35px_-10px_rgba(0,0,0,0.1)]">
-        {navigation.slice(0, 4).map((item) => {
+        {navigation.slice(0, 5).map((item) => {
           const isActive = pathname === item.href;
           return (
             <Link
@@ -233,26 +238,7 @@ export default function AdminLayout({
             </Link>
           );
         })}
-        <Link
-          href="/admin/settings"
-          className={cn(
-            "flex flex-col items-center gap-1.5 transition-all duration-300 flex-1 text-center",
-            pathname === '/admin/settings' ? "opacity-100" : "opacity-40"
-          )}
-        >
-          <div className={cn(
-            "w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300",
-            pathname === '/admin/settings' ? "bg-indigo-600 text-white shadow-lg shadow-indigo-100 scale-110" : "bg-transparent text-slate-900"
-          )}>
-            <Settings className="w-5 h-5 stroke-[2.5]" />
-          </div>
-          <span className={cn(
-            "text-[10px] font-bold tracking-tight transition-all duration-300",
-            pathname === '/admin/settings' ? "text-indigo-600" : "text-slate-600"
-          )}>
-            Settings
-          </span>
-        </Link>
+        
         <button
           onClick={() => setShowLogoutConfirm(true)}
           className="flex flex-col items-center gap-1.5 transition-all duration-300 flex-1 text-center opacity-40 hover:opacity-100"

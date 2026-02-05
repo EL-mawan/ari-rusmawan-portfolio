@@ -279,7 +279,12 @@ const Portfolio = () => {
                   onClick={() => scrollToSection('home')}
                 />
               ) : (
-                <span className="text-xl font-bold text-primary cursor-pointer hover:scale-110 transition-transform duration-300" onClick={() => scrollToSection('home')}>AR</span>
+                <img 
+                  src="/logo.png" 
+                  alt="Logo" 
+                  className="h-10 sm:h-12 w-auto object-contain cursor-pointer transition-transform duration-300 hover:scale-110" 
+                  onClick={() => scrollToSection('home')}
+                />
               )}
             </div>
             

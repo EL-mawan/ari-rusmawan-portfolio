@@ -89,7 +89,7 @@ export default function AdminLogin() {
   return (
     <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4">
       {/* Animated Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-700">
+      <div className="absolute inset-0 bg-linear-to-br from-violet-600 via-purple-600 to-indigo-700">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20"></div>
         
         {/* Floating Orbs */}
@@ -102,24 +102,24 @@ export default function AdminLogin() {
       <div className="w-full max-w-md relative z-10">
         <Card className="backdrop-blur-xl bg-white/95 dark:bg-gray-900/95 shadow-2xl border-white/20 overflow-hidden">
           {/* Gradient Top Border */}
-          <div className="h-1 bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600"></div>
+          <div className="h-1 bg-linear-to-r from-violet-600 via-purple-600 to-indigo-600"></div>
           
           <CardHeader className="text-center pb-8 pt-8 space-y-4">
             {/* Logo with Gradient Background */}
             <Link href="/" className="relative mx-auto w-24 h-24 mb-2 hover:scale-105 transition-transform group">
-              <div className="absolute inset-0 bg-gradient-to-br from-violet-600/20 to-indigo-600/20 rounded-full rotate-6 animate-pulse group-hover:rotate-12 transition-transform"></div>
+              <div className="absolute inset-0 bg-linear-to-br from-violet-600/20 to-indigo-600/20 rounded-full rotate-6 animate-pulse group-hover:rotate-12 transition-transform"></div>
               <div className="relative w-full h-full bg-white rounded-full flex items-center justify-center shadow-lg overflow-hidden border border-violet-100 p-0">
                 <img 
-                  src="/Gemini_Generated_Image_31214k31214k3121.png" 
+                  src="/logo.png" 
                   alt="Logo" 
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                 />
               </div>
             </Link>
             
             <div className="space-y-2">
-              <CardTitle className="text-3xl font-bold bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent">
-                Admin Portal
+              <CardTitle className="text-3xl font-bold bg-linear-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent">
+                Admin Panel
               </CardTitle>
               <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
                 <Sparkles className="w-4 h-4 text-violet-500" />
@@ -186,7 +186,7 @@ export default function AdminLogin() {
               {/* Submit Button */}
               <Button 
                 type="submit" 
-                className="w-full h-12 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-medium shadow-lg shadow-violet-500/30 transition-all duration-200 hover:shadow-xl hover:shadow-violet-500/40 hover:scale-[1.02] mt-6"
+                className="w-full bg-linear-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-bold h-12 rounded-xl shadow-lg shadow-indigo-200 transition-all hover:scale-[1.02] active:scale-[0.98]" 
                 disabled={isLoading}
               >
                 {isLoading ? (
