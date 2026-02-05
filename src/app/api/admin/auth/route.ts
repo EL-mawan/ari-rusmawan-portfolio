@@ -7,7 +7,9 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, password } = await request.json();
+    const body = await request.json();
+    const email = body.email?.trim().toLowerCase();
+    const password = body.password;
 
     // Validate required fields
     if (!email || !password) {
@@ -30,7 +32,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if user has admin role
-    if (user.role !== 'admin') {
+    if (user.role.toLowerCase() !== 'admin') {
       return NextResponse.json(
         { error: 'Access denied' },
         { status: 403 }
